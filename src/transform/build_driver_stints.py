@@ -131,6 +131,10 @@ def build_driver_stints(year=2025):
                 AvgLapTime=(
                     "LapTime",
                     "mean"
+                ),
+                FastestLap=(
+                    "LapTime",
+                    "min"
                 )
             )
             .reset_index()
@@ -145,7 +149,8 @@ def build_driver_stints(year=2025):
                 "Stint",
                 "Compound",
                 "Laps",
-                "AvgLapTime"
+                "AvgLapTime",
+                "FastestLap"
             ]
         ]
 
@@ -183,7 +188,7 @@ def build_driver_stints(year=2025):
 
     output_file = (
         output_folder
-        / "fact_driver_stints.csv"
+        / f"fact_driver_stints_{year}.csv"
     )
 
     driver_stints.to_csv(
