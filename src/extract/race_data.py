@@ -1,14 +1,30 @@
+import sys
 import fastf1
 from pathlib import Path
 
 # Project root
 ROOT_DIR = Path(__file__).resolve().parents[2]
 
+sys.path.insert(0, str(ROOT_DIR))
+
+from src.utils.schedule import get_race_folder_name
+
 # Cache
 CACHE_DIR = ROOT_DIR / "cache"
 CACHE_DIR.mkdir(exist_ok=True)
 
 fastf1.Cache.enable_cache(str(CACHE_DIR))
+
+
+def _save_csv_atomic(dataframe, destination):
+    """Write via a temp file + replace so a crash mid-write never leaves
+    a partial/corrupt CSV at `destination` that a rerun would trust."""
+
+    temp_path = destination.with_suffix(destination.suffix + ".tmp")
+
+    dataframe.to_csv(temp_path, index=False)
+
+    temp_path.replace(destination)
 
 
 def extract_race_data(year=2026):
@@ -29,10 +45,7 @@ def extract_race_data(year=2026):
             ""
         )
 
-        folder_name = (
-            race_name.lower()
-            .replace(" ", "_")
-        )
+        folder_name = get_race_folder_name(row["EventName"])
 
         race_folder = (
             ROOT_DIR
@@ -43,14 +56,21 @@ def extract_race_data(year=2026):
         )
 
         laps_file = race_folder / "laps.csv"
+        results_file = race_folder / "results.csv"
+        weather_file = race_folder / "weather.csv"
+
+        race_complete = (
+            laps_file.exists()
+            and results_file.exists()
+            and weather_file.exists()
+        )
 
         print("\n----------------------------------------")
         print(f"Race: {race_name}")
         print(f"Folder: {race_folder}")
-        print(f"Laps file: {laps_file}")
-        print(f"Exists: {laps_file.exists()}")
+        print(f"Complete: {race_complete}")
 
-        if laps_file.exists():
+        if race_complete:
             print(f"Skipping {race_name}")
             continue
 
@@ -71,22 +91,13 @@ def extract_race_data(year=2026):
         session.load()
 
         print("Saving laps...")
-        session.laps.to_csv(
-            race_folder / "laps.csv",
-            index=False
-        )
+        _save_csv_atomic(session.laps, laps_file)
 
         print("Saving results...")
-        session.results.to_csv(
-            race_folder / "results.csv",
-            index=False
-        )
+        _save_csv_atomic(session.results, results_file)
 
         print("Saving weather...")
-        session.weather_data.to_csv(
-            race_folder / "weather.csv",
-            index=False
-        )
+        _save_csv_atomic(session.weather_data, weather_file)
 
         print(f"Finished {race_name}")
 

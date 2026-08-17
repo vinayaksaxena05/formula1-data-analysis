@@ -1,8 +1,13 @@
+import sys
 import fastf1
 from pathlib import Path
 
 # Project root
 ROOT_DIR = Path(__file__).resolve().parents[2]
+
+sys.path.insert(0, str(ROOT_DIR))
+
+from src.utils.schedule import get_race_folder_name
 
 # Cache
 CACHE_DIR = ROOT_DIR / "cache"
@@ -29,10 +34,7 @@ def extract_telemetry(year=2026):
             ""
         )
 
-        folder_name = (
-            race_name.lower()
-            .replace(" ", "_")
-        )
+        folder_name = get_race_folder_name(row["EventName"])
 
         telemetry_folder = (
             ROOT_DIR
@@ -101,10 +103,16 @@ def extract_telemetry(year=2026):
                     .get_telemetry()
                 )
 
+                temp_path = file_path.with_suffix(
+                    file_path.suffix + ".tmp"
+                )
+
                 telemetry.to_csv(
-                    file_path,
+                    temp_path,
                     index=False
                 )
+
+                temp_path.replace(file_path)
 
             except Exception as e:
 
