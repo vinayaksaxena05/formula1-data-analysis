@@ -8,7 +8,7 @@ ROOT_DIR = Path(__file__).resolve().parents[2]
 print(f"Project Root: {ROOT_DIR}")
 
 stints = pd.read_csv(
-    ROOT_DIR / "data" / "processed" / "fact_driver_stints.csv"
+    ROOT_DIR / "data" / "processed" / f"fact_driver_stints_{year}.csv"
 )
 
 stints = stints.sort_values(

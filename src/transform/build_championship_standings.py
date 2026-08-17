@@ -1,8 +1,13 @@
+import sys
 import pandas as pd
 from pathlib import Path
 
 # Project root
 ROOT_DIR = Path(__file__).resolve().parents[2]
+
+sys.path.insert(0, str(ROOT_DIR))
+
+from src.utils.schedule import get_round_map
 
 
 def build_championship_standings(year=2025):
@@ -32,14 +37,27 @@ def build_championship_standings(year=2025):
 
     print(f"Found {len(races)} races")
 
+    round_map = get_round_map(year)
+
     all_results = []
 
-    for round_num, race_folder in enumerate(races, start=1):
+    for race_folder in races:
 
         race_name = race_folder.name
 
         print("\n--------------------------------")
         print(f"Processing {race_name}")
+
+        round_num = round_map.get(race_name)
+
+        if round_num is None:
+
+            print(
+                f"Skipping {race_name} "
+                f"(not found in season schedule)"
+            )
+
+            continue
 
         results_file = (
             race_folder

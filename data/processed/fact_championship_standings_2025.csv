@@ -1,480 +1,480 @@
 Round,Race,Abbreviation,TeamName,Position,Points,CumulativePoints,ChampionshipPosition
-1,abu_dhabi,ALB,Williams,16.0,0.0,0.0,11.0
-2,australian,ALB,Williams,5.0,10.0,10.0,7.0
-3,austrian,ALB,Williams,17.0,0.0,10.0,9.0
-4,azerbaijan,ALB,Williams,13.0,0.0,10.0,11.0
-5,bahrain,ALB,Williams,12.0,0.0,10.0,12.0
-6,belgian,ALB,Williams,6.0,8.0,18.0,9.0
-7,british,ALB,Williams,8.0,4.0,22.0,9.0
-8,canadian,ALB,Williams,20.0,0.0,22.0,9.0
-9,chinese,ALB,Williams,7.0,6.0,28.0,9.0
-10,dutch,ALB,Williams,5.0,10.0,38.0,8.0
-11,emilia_romagna,ALB,Williams,5.0,10.0,48.0,7.0
-12,hungarian,ALB,Williams,15.0,0.0,48.0,7.0
-13,italian,ALB,Williams,7.0,6.0,54.0,7.0
-14,japanese,ALB,Williams,9.0,2.0,56.0,8.0
-15,las_vegas,ALB,Williams,16.0,0.0,56.0,8.0
-16,mexico_city,ALB,Williams,12.0,0.0,56.0,8.0
-17,miami,ALB,Williams,5.0,10.0,66.0,8.0
-18,monaco,ALB,Williams,9.0,2.0,68.0,8.0
-19,qatar,ALB,Williams,11.0,0.0,68.0,8.0
-20,saudi_arabian,ALB,Williams,9.0,2.0,70.0,8.0
-21,singapore,ALB,Williams,14.0,0.0,70.0,8.0
-22,spanish,ALB,Williams,19.0,0.0,70.0,8.0
-23,são_paulo,ALB,Williams,11.0,0.0,70.0,8.0
-24,united_states,ALB,Williams,14.0,0.0,70.0,8.0
-1,abu_dhabi,ALO,Aston Martin,6.0,8.0,8.0,6.0
-2,australian,ALO,Aston Martin,17.0,0.0,8.0,9.0
-3,austrian,ALO,Aston Martin,7.0,6.0,14.0,7.0
-4,azerbaijan,ALO,Aston Martin,15.0,0.0,14.0,10.0
-5,bahrain,ALO,Aston Martin,15.0,0.0,14.0,10.0
-6,belgian,ALO,Aston Martin,17.0,0.0,14.0,11.0
-7,british,ALO,Aston Martin,9.0,2.0,16.0,11.0
-8,canadian,ALO,Aston Martin,7.0,6.0,22.0,9.0
-9,chinese,ALO,Aston Martin,17.0,0.0,22.0,11.0
-10,dutch,ALO,Aston Martin,8.0,4.0,26.0,10.0
-11,emilia_romagna,ALO,Aston Martin,11.0,0.0,26.0,10.0
-12,hungarian,ALO,Aston Martin,5.0,10.0,36.0,9.0
-13,italian,ALO,Aston Martin,19.0,0.0,36.0,9.0
-14,japanese,ALO,Aston Martin,11.0,0.0,36.0,9.0
-15,las_vegas,ALO,Aston Martin,11.0,0.0,36.0,9.0
-16,mexico_city,ALO,Aston Martin,18.0,0.0,36.0,9.0
-17,miami,ALO,Aston Martin,15.0,0.0,36.0,9.0
-18,monaco,ALO,Aston Martin,19.0,0.0,36.0,10.0
-19,qatar,ALO,Aston Martin,7.0,6.0,42.0,10.0
-20,saudi_arabian,ALO,Aston Martin,11.0,0.0,42.0,10.0
-21,singapore,ALO,Aston Martin,7.0,6.0,48.0,10.0
-22,spanish,ALO,Aston Martin,9.0,2.0,50.0,10.0
-23,são_paulo,ALO,Aston Martin,14.0,0.0,50.0,10.0
-24,united_states,ALO,Aston Martin,10.0,1.0,51.0,10.0
-1,abu_dhabi,ANT,Mercedes,15.0,0.0,0.0,11.0
-2,australian,ANT,Mercedes,4.0,12.0,12.0,6.0
-3,austrian,ANT,Mercedes,19.0,0.0,12.0,8.0
-4,azerbaijan,ANT,Mercedes,4.0,12.0,24.0,6.0
-5,bahrain,ANT,Mercedes,11.0,0.0,24.0,7.0
-6,belgian,ANT,Mercedes,16.0,0.0,24.0,7.0
-7,british,ANT,Mercedes,16.0,0.0,24.0,8.0
-8,canadian,ANT,Mercedes,3.0,15.0,39.0,7.0
-9,chinese,ANT,Mercedes,6.0,8.0,47.0,7.0
-10,dutch,ANT,Mercedes,16.0,0.0,47.0,7.0
-11,emilia_romagna,ANT,Mercedes,19.0,0.0,47.0,8.0
-12,hungarian,ANT,Mercedes,10.0,1.0,48.0,7.0
-13,italian,ANT,Mercedes,9.0,2.0,50.0,8.0
-14,japanese,ANT,Mercedes,6.0,8.0,58.0,7.0
-15,las_vegas,ANT,Mercedes,3.0,15.0,73.0,7.0
-16,mexico_city,ANT,Mercedes,6.0,8.0,81.0,7.0
-17,miami,ANT,Mercedes,6.0,8.0,89.0,7.0
-18,monaco,ANT,Mercedes,18.0,0.0,89.0,7.0
-19,qatar,ANT,Mercedes,5.0,10.0,99.0,7.0
-20,saudi_arabian,ANT,Mercedes,6.0,8.0,107.0,7.0
-21,singapore,ANT,Mercedes,5.0,10.0,117.0,6.0
-22,spanish,ANT,Mercedes,18.0,0.0,117.0,7.0
-23,são_paulo,ANT,Mercedes,2.0,18.0,135.0,6.0
-24,united_states,ANT,Mercedes,13.0,0.0,135.0,6.0
-1,abu_dhabi,BEA,Haas F1 Team,12.0,0.0,0.0,11.0
-2,australian,BEA,Haas F1 Team,14.0,0.0,0.0,13.0
-3,austrian,BEA,Haas F1 Team,11.0,0.0,0.0,15.0
-4,azerbaijan,BEA,Haas F1 Team,12.0,0.0,0.0,18.0
-5,bahrain,BEA,Haas F1 Team,10.0,1.0,1.0,18.0
-6,belgian,BEA,Haas F1 Team,11.0,0.0,1.0,18.0
-7,british,BEA,Haas F1 Team,11.0,0.0,1.0,18.0
-8,canadian,BEA,Haas F1 Team,11.0,0.0,1.0,18.0
-9,chinese,BEA,Haas F1 Team,8.0,4.0,5.0,18.0
-10,dutch,BEA,Haas F1 Team,6.0,8.0,13.0,17.0
-11,emilia_romagna,BEA,Haas F1 Team,17.0,0.0,13.0,17.0
-12,hungarian,BEA,Haas F1 Team,20.0,0.0,13.0,18.0
-13,italian,BEA,Haas F1 Team,12.0,0.0,13.0,18.0
-14,japanese,BEA,Haas F1 Team,10.0,1.0,14.0,18.0
-15,las_vegas,BEA,Haas F1 Team,10.0,1.0,15.0,17.0
-16,mexico_city,BEA,Haas F1 Team,4.0,12.0,27.0,15.0
-17,miami,BEA,Haas F1 Team,19.0,0.0,27.0,15.0
-18,monaco,BEA,Haas F1 Team,12.0,0.0,27.0,16.0
-19,qatar,BEA,Haas F1 Team,19.0,0.0,27.0,16.0
-20,saudi_arabian,BEA,Haas F1 Team,13.0,0.0,27.0,16.0
-21,singapore,BEA,Haas F1 Team,9.0,2.0,29.0,15.0
-22,spanish,BEA,Haas F1 Team,17.0,0.0,29.0,15.0
-23,são_paulo,BEA,Haas F1 Team,6.0,8.0,37.0,14.0
-24,united_states,BEA,Haas F1 Team,9.0,2.0,39.0,13.0
-1,abu_dhabi,BOR,Kick Sauber,11.0,0.0,0.0,11.0
-2,australian,BOR,Kick Sauber,16.0,0.0,0.0,13.0
-3,austrian,BOR,Kick Sauber,8.0,4.0,4.0,14.0
-4,azerbaijan,BOR,Kick Sauber,11.0,0.0,4.0,16.0
-5,bahrain,BOR,Kick Sauber,18.0,0.0,4.0,17.0
-6,belgian,BOR,Kick Sauber,9.0,2.0,6.0,17.0
-7,british,BOR,Kick Sauber,18.0,0.0,6.0,17.0
-8,canadian,BOR,Kick Sauber,14.0,0.0,6.0,17.0
-9,chinese,BOR,Kick Sauber,14.0,0.0,6.0,17.0
-10,dutch,BOR,Kick Sauber,15.0,0.0,6.0,19.0
-11,emilia_romagna,BOR,Kick Sauber,18.0,0.0,6.0,19.0
-12,hungarian,BOR,Kick Sauber,6.0,8.0,14.0,17.0
-13,italian,BOR,Kick Sauber,8.0,4.0,18.0,16.0
-14,japanese,BOR,Kick Sauber,19.0,0.0,18.0,16.0
-15,las_vegas,BOR,Kick Sauber,17.0,0.0,18.0,16.0
-16,mexico_city,BOR,Kick Sauber,10.0,1.0,19.0,17.0
-17,miami,BOR,Kick Sauber,18.0,0.0,19.0,17.0
-18,monaco,BOR,Kick Sauber,14.0,0.0,19.0,17.0
-19,qatar,BOR,Kick Sauber,13.0,0.0,19.0,17.0
-20,saudi_arabian,BOR,Kick Sauber,18.0,0.0,19.0,17.0
-21,singapore,BOR,Kick Sauber,17.0,0.0,19.0,17.0
-22,spanish,BOR,Kick Sauber,12.0,0.0,19.0,16.0
-23,são_paulo,BOR,Kick Sauber,20.0,0.0,19.0,18.0
-24,united_states,BOR,Kick Sauber,18.0,0.0,19.0,19.0
-1,abu_dhabi,COL,Alpine,20.0,0.0,0.0,11.0
-3,austrian,COL,Alpine,15.0,0.0,0.0,15.0
-4,azerbaijan,COL,Alpine,19.0,0.0,0.0,18.0
-6,belgian,COL,Alpine,19.0,0.0,0.0,20.0
-7,british,COL,Alpine,20.0,0.0,0.0,20.0
-8,canadian,COL,Alpine,13.0,0.0,0.0,20.0
-10,dutch,COL,Alpine,11.0,0.0,0.0,20.0
-11,emilia_romagna,COL,Alpine,16.0,0.0,0.0,20.0
-12,hungarian,COL,Alpine,18.0,0.0,0.0,20.0
-13,italian,COL,Alpine,17.0,0.0,0.0,20.0
-15,las_vegas,COL,Alpine,15.0,0.0,0.0,20.0
-16,mexico_city,COL,Alpine,16.0,0.0,0.0,20.0
-18,monaco,COL,Alpine,13.0,0.0,0.0,20.0
-19,qatar,COL,Alpine,14.0,0.0,0.0,20.0
-21,singapore,COL,Alpine,16.0,0.0,0.0,20.0
-22,spanish,COL,Alpine,15.0,0.0,0.0,19.0
-23,são_paulo,COL,Alpine,15.0,0.0,0.0,20.0
-24,united_states,COL,Alpine,17.0,0.0,0.0,20.0
-2,australian,DOO,Alpine,19.0,0.0,0.0,13.0
-5,bahrain,DOO,Alpine,14.0,0.0,0.0,20.0
-9,chinese,DOO,Alpine,13.0,0.0,0.0,20.0
-14,japanese,DOO,Alpine,15.0,0.0,0.0,20.0
-17,miami,DOO,Alpine,20.0,0.0,0.0,20.0
-20,saudi_arabian,DOO,Alpine,17.0,0.0,0.0,20.0
-1,abu_dhabi,GAS,Alpine,19.0,0.0,0.0,11.0
-2,australian,GAS,Alpine,11.0,0.0,0.0,13.0
-3,austrian,GAS,Alpine,13.0,0.0,0.0,15.0
-4,azerbaijan,GAS,Alpine,18.0,0.0,0.0,18.0
-5,bahrain,GAS,Alpine,7.0,6.0,6.0,16.0
-6,belgian,GAS,Alpine,10.0,1.0,7.0,16.0
-7,british,GAS,Alpine,6.0,8.0,15.0,12.0
-8,canadian,GAS,Alpine,15.0,0.0,15.0,13.0
-9,chinese,GAS,Alpine,20.0,0.0,15.0,15.0
-10,dutch,GAS,Alpine,17.0,0.0,15.0,16.0
-11,emilia_romagna,GAS,Alpine,13.0,0.0,15.0,16.0
-12,hungarian,GAS,Alpine,19.0,0.0,15.0,16.0
-13,italian,GAS,Alpine,16.0,0.0,15.0,17.0
-14,japanese,GAS,Alpine,13.0,0.0,15.0,17.0
-15,las_vegas,GAS,Alpine,13.0,0.0,15.0,17.0
-16,mexico_city,GAS,Alpine,15.0,0.0,15.0,18.0
-17,miami,GAS,Alpine,13.0,0.0,15.0,18.0
-18,monaco,GAS,Alpine,20.0,0.0,15.0,18.0
-19,qatar,GAS,Alpine,16.0,0.0,15.0,18.0
-20,saudi_arabian,GAS,Alpine,20.0,0.0,15.0,18.0
-21,singapore,GAS,Alpine,19.0,0.0,15.0,18.0
-22,spanish,GAS,Alpine,8.0,4.0,19.0,16.0
-23,são_paulo,GAS,Alpine,10.0,1.0,20.0,17.0
-24,united_states,GAS,Alpine,19.0,0.0,20.0,18.0
-1,abu_dhabi,HAD,Racing Bulls,17.0,0.0,0.0,11.0
-2,australian,HAD,Racing Bulls,20.0,0.0,0.0,13.0
-3,austrian,HAD,Racing Bulls,12.0,0.0,0.0,15.0
-4,azerbaijan,HAD,Racing Bulls,10.0,1.0,1.0,17.0
-5,bahrain,HAD,Racing Bulls,13.0,0.0,1.0,18.0
-6,belgian,HAD,Racing Bulls,20.0,0.0,1.0,18.0
-7,british,HAD,Racing Bulls,17.0,0.0,1.0,18.0
-8,canadian,HAD,Racing Bulls,16.0,0.0,1.0,18.0
-9,chinese,HAD,Racing Bulls,11.0,0.0,1.0,19.0
-10,dutch,HAD,Racing Bulls,3.0,15.0,16.0,15.0
-11,emilia_romagna,HAD,Racing Bulls,9.0,2.0,18.0,15.0
-12,hungarian,HAD,Racing Bulls,11.0,0.0,18.0,15.0
-13,italian,HAD,Racing Bulls,10.0,1.0,19.0,15.0
-14,japanese,HAD,Racing Bulls,8.0,4.0,23.0,14.0
-15,las_vegas,HAD,Racing Bulls,6.0,8.0,31.0,11.0
-16,mexico_city,HAD,Racing Bulls,13.0,0.0,31.0,11.0
-17,miami,HAD,Racing Bulls,11.0,0.0,31.0,12.0
-18,monaco,HAD,Racing Bulls,6.0,8.0,39.0,9.0
-19,qatar,HAD,Racing Bulls,18.0,0.0,39.0,11.0
-20,saudi_arabian,HAD,Racing Bulls,10.0,1.0,40.0,11.0
-21,singapore,HAD,Racing Bulls,11.0,0.0,40.0,11.0
-22,spanish,HAD,Racing Bulls,7.0,6.0,46.0,11.0
-23,são_paulo,HAD,Racing Bulls,8.0,4.0,50.0,10.0
-24,united_states,HAD,Racing Bulls,16.0,0.0,50.0,12.0
-1,abu_dhabi,HAM,Ferrari,8.0,4.0,4.0,8.0
-2,australian,HAM,Ferrari,10.0,1.0,5.0,12.0
-3,austrian,HAM,Ferrari,4.0,12.0,17.0,6.0
-4,azerbaijan,HAM,Ferrari,8.0,4.0,21.0,7.0
-5,bahrain,HAM,Ferrari,5.0,10.0,31.0,6.0
-6,belgian,HAM,Ferrari,7.0,6.0,37.0,6.0
-7,british,HAM,Ferrari,4.0,12.0,49.0,6.0
-8,canadian,HAM,Ferrari,6.0,8.0,57.0,6.0
-9,chinese,HAM,Ferrari,19.0,0.0,57.0,6.0
-10,dutch,HAM,Ferrari,20.0,0.0,57.0,6.0
-11,emilia_romagna,HAM,Ferrari,4.0,12.0,69.0,6.0
-12,hungarian,HAM,Ferrari,12.0,0.0,69.0,6.0
-13,italian,HAM,Ferrari,6.0,8.0,77.0,6.0
-14,japanese,HAM,Ferrari,7.0,6.0,83.0,6.0
-15,las_vegas,HAM,Ferrari,8.0,4.0,87.0,6.0
-16,mexico_city,HAM,Ferrari,8.0,4.0,91.0,6.0
-17,miami,HAM,Ferrari,8.0,4.0,95.0,6.0
-18,monaco,HAM,Ferrari,5.0,10.0,105.0,6.0
-19,qatar,HAM,Ferrari,12.0,0.0,105.0,6.0
-20,saudi_arabian,HAM,Ferrari,7.0,6.0,111.0,6.0
-21,singapore,HAM,Ferrari,8.0,4.0,115.0,7.0
-22,spanish,HAM,Ferrari,6.0,8.0,123.0,6.0
-23,são_paulo,HAM,Ferrari,18.0,0.0,123.0,7.0
-24,united_states,HAM,Ferrari,4.0,12.0,135.0,6.0
-1,abu_dhabi,HUL,Kick Sauber,9.0,2.0,2.0,9.0
-2,australian,HUL,Kick Sauber,7.0,6.0,8.0,9.0
-3,austrian,HUL,Kick Sauber,9.0,2.0,10.0,9.0
-4,azerbaijan,HUL,Kick Sauber,16.0,0.0,10.0,11.0
-5,bahrain,HUL,Kick Sauber,20.0,0.0,10.0,12.0
-6,belgian,HUL,Kick Sauber,12.0,0.0,10.0,13.0
-7,british,HUL,Kick Sauber,3.0,15.0,25.0,7.0
-8,canadian,HUL,Kick Sauber,8.0,4.0,29.0,8.0
-9,chinese,HUL,Kick Sauber,15.0,0.0,29.0,8.0
-10,dutch,HUL,Kick Sauber,14.0,0.0,29.0,9.0
-11,emilia_romagna,HUL,Kick Sauber,12.0,0.0,29.0,9.0
-12,hungarian,HUL,Kick Sauber,13.0,0.0,29.0,10.0
-13,italian,HUL,Kick Sauber,20.0,0.0,29.0,10.0
-14,japanese,HUL,Kick Sauber,16.0,0.0,29.0,10.0
-15,las_vegas,HUL,Kick Sauber,7.0,6.0,35.0,10.0
-16,mexico_city,HUL,Kick Sauber,19.0,0.0,35.0,10.0
-17,miami,HUL,Kick Sauber,14.0,0.0,35.0,10.0
-18,monaco,HUL,Kick Sauber,16.0,0.0,35.0,11.0
-19,qatar,HUL,Kick Sauber,20.0,0.0,35.0,12.0
-20,saudi_arabian,HUL,Kick Sauber,15.0,0.0,35.0,12.0
-21,singapore,HUL,Kick Sauber,20.0,0.0,35.0,12.0
-22,spanish,HUL,Kick Sauber,5.0,10.0,45.0,12.0
-23,são_paulo,HUL,Kick Sauber,9.0,2.0,47.0,12.0
-24,united_states,HUL,Kick Sauber,8.0,4.0,51.0,10.0
-1,abu_dhabi,LAW,Racing Bulls,18.0,0.0,0.0,11.0
-2,australian,LAW,Red Bull Racing,15.0,0.0,0.0,13.0
-3,austrian,LAW,Racing Bulls,6.0,8.0,8.0,12.0
-4,azerbaijan,LAW,Racing Bulls,5.0,10.0,18.0,8.0
-5,bahrain,LAW,Racing Bulls,16.0,0.0,18.0,8.0
-6,belgian,LAW,Racing Bulls,8.0,4.0,22.0,8.0
-7,british,LAW,Racing Bulls,19.0,0.0,22.0,9.0
-8,canadian,LAW,Racing Bulls,19.0,0.0,22.0,9.0
-9,chinese,LAW,Red Bull Racing,12.0,0.0,22.0,11.0
-10,dutch,LAW,Racing Bulls,12.0,0.0,22.0,13.0
-11,emilia_romagna,LAW,Racing Bulls,14.0,0.0,22.0,13.0
-12,hungarian,LAW,Racing Bulls,8.0,4.0,26.0,12.0
-13,italian,LAW,Racing Bulls,14.0,0.0,26.0,12.0
-14,japanese,LAW,Racing Bulls,17.0,0.0,26.0,12.0
-15,las_vegas,LAW,Racing Bulls,14.0,0.0,26.0,14.0
-16,mexico_city,LAW,Racing Bulls,20.0,0.0,26.0,16.0
-17,miami,LAW,Racing Bulls,17.0,0.0,26.0,16.0
-18,monaco,LAW,Racing Bulls,8.0,4.0,30.0,14.0
-19,qatar,LAW,Racing Bulls,9.0,2.0,32.0,14.0
-20,saudi_arabian,LAW,Racing Bulls,12.0,0.0,32.0,14.0
-21,singapore,LAW,Racing Bulls,15.0,0.0,32.0,14.0
-22,spanish,LAW,Racing Bulls,11.0,0.0,32.0,14.0
-23,são_paulo,LAW,Racing Bulls,7.0,6.0,38.0,13.0
-24,united_states,LAW,Racing Bulls,11.0,0.0,38.0,14.0
-1,abu_dhabi,LEC,Ferrari,4.0,12.0,12.0,4.0
-2,australian,LEC,Ferrari,8.0,4.0,16.0,5.0
-3,austrian,LEC,Ferrari,3.0,15.0,31.0,5.0
-4,azerbaijan,LEC,Ferrari,9.0,2.0,33.0,5.0
-5,bahrain,LEC,Ferrari,4.0,12.0,45.0,5.0
-6,belgian,LEC,Ferrari,3.0,15.0,60.0,5.0
-7,british,LEC,Ferrari,14.0,0.0,60.0,5.0
-8,canadian,LEC,Ferrari,5.0,10.0,70.0,5.0
-9,chinese,LEC,Ferrari,18.0,0.0,70.0,5.0
-10,dutch,LEC,Ferrari,19.0,0.0,70.0,5.0
-11,emilia_romagna,LEC,Ferrari,6.0,8.0,78.0,5.0
-12,hungarian,LEC,Ferrari,4.0,12.0,90.0,5.0
-13,italian,LEC,Ferrari,4.0,12.0,102.0,5.0
-14,japanese,LEC,Ferrari,4.0,12.0,114.0,5.0
-15,las_vegas,LEC,Ferrari,4.0,12.0,126.0,5.0
-16,mexico_city,LEC,Ferrari,2.0,18.0,144.0,5.0
-17,miami,LEC,Ferrari,7.0,6.0,150.0,5.0
-18,monaco,LEC,Ferrari,2.0,18.0,168.0,5.0
-19,qatar,LEC,Ferrari,8.0,4.0,172.0,5.0
-20,saudi_arabian,LEC,Ferrari,3.0,15.0,187.0,5.0
-21,singapore,LEC,Ferrari,6.0,8.0,195.0,5.0
-22,spanish,LEC,Ferrari,3.0,15.0,210.0,5.0
-23,são_paulo,LEC,Ferrari,19.0,0.0,210.0,5.0
-24,united_states,LEC,Ferrari,3.0,15.0,225.0,5.0
-1,abu_dhabi,NOR,McLaren,3.0,15.0,15.0,3.0
-2,australian,NOR,McLaren,1.0,25.0,40.0,2.0
-3,austrian,NOR,McLaren,1.0,25.0,65.0,1.0
-4,azerbaijan,NOR,McLaren,7.0,6.0,71.0,1.0
-5,bahrain,NOR,McLaren,3.0,15.0,86.0,1.0
-6,belgian,NOR,McLaren,2.0,18.0,104.0,1.0
-7,british,NOR,McLaren,1.0,25.0,129.0,1.0
-8,canadian,NOR,McLaren,18.0,0.0,129.0,1.0
-9,chinese,NOR,McLaren,2.0,18.0,147.0,1.0
-10,dutch,NOR,McLaren,18.0,0.0,147.0,2.0
-11,emilia_romagna,NOR,McLaren,2.0,18.0,165.0,3.0
-12,hungarian,NOR,McLaren,1.0,25.0,190.0,2.0
-13,italian,NOR,McLaren,2.0,18.0,208.0,2.0
-14,japanese,NOR,McLaren,2.0,18.0,226.0,2.0
-15,las_vegas,NOR,McLaren,19.0,0.0,226.0,3.0
-16,mexico_city,NOR,McLaren,1.0,25.0,251.0,2.0
-17,miami,NOR,McLaren,2.0,18.0,269.0,2.0
-18,monaco,NOR,McLaren,1.0,25.0,294.0,1.0
-19,qatar,NOR,McLaren,4.0,12.0,306.0,2.0
-20,saudi_arabian,NOR,McLaren,4.0,12.0,318.0,3.0
-21,singapore,NOR,McLaren,3.0,15.0,333.0,3.0
-22,spanish,NOR,McLaren,2.0,18.0,351.0,2.0
-23,são_paulo,NOR,McLaren,1.0,25.0,376.0,1.0
-24,united_states,NOR,McLaren,2.0,18.0,394.0,1.0
-1,abu_dhabi,OCO,Haas F1 Team,7.0,6.0,6.0,7.0
-2,australian,OCO,Haas F1 Team,13.0,0.0,6.0,11.0
-3,austrian,OCO,Haas F1 Team,10.0,1.0,7.0,13.0
-4,azerbaijan,OCO,Haas F1 Team,14.0,0.0,7.0,15.0
-5,bahrain,OCO,Haas F1 Team,8.0,4.0,11.0,11.0
-6,belgian,OCO,Haas F1 Team,15.0,0.0,11.0,12.0
-7,british,OCO,Haas F1 Team,13.0,0.0,11.0,15.0
-8,canadian,OCO,Haas F1 Team,9.0,2.0,13.0,15.0
-9,chinese,OCO,Haas F1 Team,5.0,10.0,23.0,10.0
-10,dutch,OCO,Haas F1 Team,10.0,1.0,24.0,11.0
-11,emilia_romagna,OCO,Haas F1 Team,20.0,0.0,24.0,11.0
-12,hungarian,OCO,Haas F1 Team,16.0,0.0,24.0,13.0
-13,italian,OCO,Haas F1 Team,15.0,0.0,24.0,13.0
-14,japanese,OCO,Haas F1 Team,18.0,0.0,24.0,13.0
-15,las_vegas,OCO,Haas F1 Team,9.0,2.0,26.0,14.0
-16,mexico_city,OCO,Haas F1 Team,9.0,2.0,28.0,14.0
-17,miami,OCO,Haas F1 Team,12.0,0.0,28.0,14.0
-18,monaco,OCO,Haas F1 Team,7.0,6.0,34.0,12.0
-19,qatar,OCO,Haas F1 Team,15.0,0.0,34.0,13.0
-20,saudi_arabian,OCO,Haas F1 Team,14.0,0.0,34.0,13.0
-21,singapore,OCO,Haas F1 Team,18.0,0.0,34.0,13.0
-22,spanish,OCO,Haas F1 Team,16.0,0.0,34.0,13.0
-23,são_paulo,OCO,Haas F1 Team,12.0,0.0,34.0,15.0
-24,united_states,OCO,Haas F1 Team,15.0,0.0,34.0,15.0
-1,abu_dhabi,PIA,McLaren,2.0,18.0,18.0,2.0
-2,australian,PIA,McLaren,9.0,2.0,20.0,4.0
-3,austrian,PIA,McLaren,2.0,18.0,38.0,3.0
-4,azerbaijan,PIA,McLaren,20.0,0.0,38.0,4.0
-5,bahrain,PIA,McLaren,1.0,25.0,63.0,4.0
-6,belgian,PIA,McLaren,1.0,25.0,88.0,2.0
-7,british,PIA,McLaren,2.0,18.0,106.0,2.0
-8,canadian,PIA,McLaren,4.0,12.0,118.0,2.0
-9,chinese,PIA,McLaren,1.0,25.0,143.0,2.0
-10,dutch,PIA,McLaren,1.0,25.0,168.0,1.0
-11,emilia_romagna,PIA,McLaren,3.0,15.0,183.0,1.0
-12,hungarian,PIA,McLaren,2.0,18.0,201.0,1.0
-13,italian,PIA,McLaren,3.0,15.0,216.0,1.0
-14,japanese,PIA,McLaren,3.0,15.0,231.0,1.0
-15,las_vegas,PIA,McLaren,20.0,0.0,231.0,2.0
-16,mexico_city,PIA,McLaren,5.0,10.0,241.0,3.0
-17,miami,PIA,McLaren,1.0,25.0,266.0,3.0
-18,monaco,PIA,McLaren,3.0,15.0,281.0,3.0
-19,qatar,PIA,McLaren,2.0,18.0,299.0,3.0
-20,saudi_arabian,PIA,McLaren,1.0,25.0,324.0,2.0
-21,singapore,PIA,McLaren,4.0,12.0,336.0,2.0
-22,spanish,PIA,McLaren,1.0,25.0,361.0,1.0
-23,são_paulo,PIA,McLaren,5.0,10.0,371.0,2.0
-24,united_states,PIA,McLaren,5.0,10.0,381.0,3.0
-1,abu_dhabi,RUS,Mercedes,5.0,10.0,10.0,5.0
-2,australian,RUS,Mercedes,3.0,15.0,25.0,3.0
-3,austrian,RUS,Mercedes,5.0,10.0,35.0,4.0
-4,azerbaijan,RUS,Mercedes,2.0,18.0,53.0,3.0
-5,bahrain,RUS,Mercedes,2.0,18.0,71.0,3.0
-6,belgian,RUS,Mercedes,5.0,10.0,81.0,4.0
-7,british,RUS,Mercedes,10.0,1.0,82.0,4.0
-8,canadian,RUS,Mercedes,1.0,25.0,107.0,4.0
-9,chinese,RUS,Mercedes,3.0,15.0,122.0,4.0
-10,dutch,RUS,Mercedes,4.0,12.0,134.0,4.0
-11,emilia_romagna,RUS,Mercedes,7.0,6.0,140.0,4.0
-12,hungarian,RUS,Mercedes,3.0,15.0,155.0,4.0
-13,italian,RUS,Mercedes,5.0,10.0,165.0,4.0
-14,japanese,RUS,Mercedes,5.0,10.0,175.0,4.0
-15,las_vegas,RUS,Mercedes,2.0,18.0,193.0,4.0
-16,mexico_city,RUS,Mercedes,7.0,6.0,199.0,4.0
-17,miami,RUS,Mercedes,3.0,15.0,214.0,4.0
-18,monaco,RUS,Mercedes,11.0,0.0,214.0,4.0
-19,qatar,RUS,Mercedes,6.0,8.0,222.0,4.0
-20,saudi_arabian,RUS,Mercedes,5.0,10.0,232.0,4.0
-21,singapore,RUS,Mercedes,1.0,25.0,257.0,4.0
-22,spanish,RUS,Mercedes,4.0,12.0,269.0,4.0
-23,são_paulo,RUS,Mercedes,4.0,12.0,281.0,4.0
-24,united_states,RUS,Mercedes,6.0,8.0,289.0,4.0
-1,abu_dhabi,SAI,Williams,13.0,0.0,0.0,11.0
-2,australian,SAI,Williams,18.0,0.0,0.0,13.0
-3,austrian,SAI,Williams,20.0,0.0,0.0,15.0
-4,azerbaijan,SAI,Williams,3.0,15.0,15.0,9.0
-5,bahrain,SAI,Williams,19.0,0.0,15.0,9.0
-6,belgian,SAI,Williams,18.0,0.0,15.0,10.0
-7,british,SAI,Williams,12.0,0.0,15.0,12.0
-8,canadian,SAI,Williams,10.0,1.0,16.0,12.0
-9,chinese,SAI,Williams,10.0,1.0,17.0,13.0
-10,dutch,SAI,Williams,13.0,0.0,17.0,14.0
-11,emilia_romagna,SAI,Williams,8.0,4.0,21.0,14.0
-12,hungarian,SAI,Williams,14.0,0.0,21.0,14.0
-13,italian,SAI,Williams,11.0,0.0,21.0,14.0
-14,japanese,SAI,Williams,14.0,0.0,21.0,15.0
-15,las_vegas,SAI,Williams,5.0,10.0,31.0,11.0
-16,mexico_city,SAI,Williams,17.0,0.0,31.0,11.0
-17,miami,SAI,Williams,9.0,2.0,33.0,11.0
-18,monaco,SAI,Williams,10.0,1.0,34.0,12.0
-19,qatar,SAI,Williams,3.0,15.0,49.0,9.0
-20,saudi_arabian,SAI,Williams,8.0,4.0,53.0,9.0
-21,singapore,SAI,Williams,10.0,1.0,54.0,9.0
-22,spanish,SAI,Williams,14.0,0.0,54.0,9.0
-23,são_paulo,SAI,Williams,13.0,0.0,54.0,9.0
-24,united_states,SAI,Williams,20.0,0.0,54.0,9.0
-1,abu_dhabi,STR,Aston Martin,10.0,1.0,1.0,10.0
-2,australian,STR,Aston Martin,6.0,8.0,9.0,8.0
-3,austrian,STR,Aston Martin,14.0,0.0,9.0,11.0
-4,azerbaijan,STR,Aston Martin,17.0,0.0,9.0,13.0
-5,bahrain,STR,Aston Martin,17.0,0.0,9.0,15.0
-6,belgian,STR,Aston Martin,14.0,0.0,9.0,15.0
-7,british,STR,Aston Martin,7.0,6.0,15.0,12.0
-8,canadian,STR,Aston Martin,17.0,0.0,15.0,13.0
-9,chinese,STR,Aston Martin,9.0,2.0,17.0,13.0
-10,dutch,STR,Aston Martin,7.0,6.0,23.0,12.0
-11,emilia_romagna,STR,Aston Martin,15.0,0.0,23.0,12.0
-12,hungarian,STR,Aston Martin,7.0,6.0,29.0,10.0
-13,italian,STR,Aston Martin,18.0,0.0,29.0,10.0
-14,japanese,STR,Aston Martin,20.0,0.0,29.0,10.0
-15,las_vegas,STR,Aston Martin,18.0,0.0,29.0,13.0
-16,mexico_city,STR,Aston Martin,14.0,0.0,29.0,13.0
-17,miami,STR,Aston Martin,16.0,0.0,29.0,13.0
-18,monaco,STR,Aston Martin,15.0,0.0,29.0,15.0
-19,qatar,STR,Aston Martin,17.0,0.0,29.0,15.0
-20,saudi_arabian,STR,Aston Martin,16.0,0.0,29.0,15.0
-21,singapore,STR,Aston Martin,13.0,0.0,29.0,15.0
-23,são_paulo,STR,Aston Martin,16.0,0.0,29.0,16.0
-24,united_states,STR,Aston Martin,12.0,0.0,29.0,16.0
-1,abu_dhabi,TSU,Red Bull Racing,14.0,0.0,0.0,11.0
-2,australian,TSU,Racing Bulls,12.0,0.0,0.0,13.0
-3,austrian,TSU,Red Bull Racing,16.0,0.0,0.0,15.0
-4,azerbaijan,TSU,Red Bull Racing,6.0,8.0,8.0,14.0
-5,bahrain,TSU,Red Bull Racing,9.0,2.0,10.0,12.0
-6,belgian,TSU,Red Bull Racing,13.0,0.0,10.0,13.0
-7,british,TSU,Red Bull Racing,15.0,0.0,10.0,16.0
-8,canadian,TSU,Red Bull Racing,12.0,0.0,10.0,16.0
-9,chinese,TSU,Racing Bulls,16.0,0.0,10.0,16.0
-10,dutch,TSU,Red Bull Racing,9.0,2.0,12.0,18.0
-11,emilia_romagna,TSU,Red Bull Racing,10.0,1.0,13.0,17.0
-12,hungarian,TSU,Red Bull Racing,17.0,0.0,13.0,18.0
-13,italian,TSU,Red Bull Racing,13.0,0.0,13.0,18.0
-14,japanese,TSU,Red Bull Racing,12.0,0.0,13.0,19.0
-15,las_vegas,TSU,Red Bull Racing,12.0,0.0,13.0,19.0
-16,mexico_city,TSU,Red Bull Racing,11.0,0.0,13.0,19.0
-17,miami,TSU,Red Bull Racing,10.0,1.0,14.0,19.0
-18,monaco,TSU,Red Bull Racing,17.0,0.0,14.0,19.0
-19,qatar,TSU,Red Bull Racing,10.0,1.0,15.0,18.0
-20,saudi_arabian,TSU,Red Bull Racing,19.0,0.0,15.0,18.0
-21,singapore,TSU,Red Bull Racing,12.0,0.0,15.0,18.0
-22,spanish,TSU,Red Bull Racing,13.0,0.0,15.0,18.0
-23,são_paulo,TSU,Red Bull Racing,17.0,0.0,15.0,19.0
-24,united_states,TSU,Red Bull Racing,7.0,6.0,21.0,17.0
-1,abu_dhabi,VER,Red Bull Racing,1.0,25.0,25.0,1.0
-2,australian,VER,Red Bull Racing,2.0,18.0,43.0,1.0
-3,austrian,VER,Red Bull Racing,18.0,0.0,43.0,2.0
-4,azerbaijan,VER,Red Bull Racing,1.0,25.0,68.0,2.0
-5,bahrain,VER,Red Bull Racing,6.0,8.0,76.0,2.0
-6,belgian,VER,Red Bull Racing,4.0,12.0,88.0,2.0
-7,british,VER,Red Bull Racing,5.0,10.0,98.0,3.0
-8,canadian,VER,Red Bull Racing,2.0,18.0,116.0,3.0
-9,chinese,VER,Red Bull Racing,4.0,12.0,128.0,3.0
-10,dutch,VER,Red Bull Racing,2.0,18.0,146.0,3.0
-11,emilia_romagna,VER,Red Bull Racing,1.0,25.0,171.0,2.0
-12,hungarian,VER,Red Bull Racing,9.0,2.0,173.0,3.0
-13,italian,VER,Red Bull Racing,1.0,25.0,198.0,3.0
-14,japanese,VER,Red Bull Racing,1.0,25.0,223.0,3.0
-15,las_vegas,VER,Red Bull Racing,1.0,25.0,248.0,1.0
-16,mexico_city,VER,Red Bull Racing,3.0,15.0,263.0,1.0
-17,miami,VER,Red Bull Racing,4.0,12.0,275.0,1.0
-18,monaco,VER,Red Bull Racing,4.0,12.0,287.0,2.0
-19,qatar,VER,Red Bull Racing,1.0,25.0,312.0,1.0
-20,saudi_arabian,VER,Red Bull Racing,2.0,18.0,330.0,1.0
-21,singapore,VER,Red Bull Racing,2.0,18.0,348.0,1.0
-22,spanish,VER,Red Bull Racing,10.0,1.0,349.0,3.0
-23,são_paulo,VER,Red Bull Racing,3.0,15.0,364.0,3.0
-24,united_states,VER,Red Bull Racing,1.0,25.0,389.0,2.0
+1,australian,ALB,Williams,5.0,10.0,10.0,5.0
+2,chinese,ALB,Williams,7.0,6.0,16.0,6.0
+3,japanese,ALB,Williams,9.0,2.0,18.0,6.0
+4,bahrain,ALB,Williams,12.0,0.0,18.0,7.0
+5,saudi_arabian,ALB,Williams,9.0,2.0,20.0,8.0
+6,miami,ALB,Williams,5.0,10.0,30.0,7.0
+7,emilia_romagna,ALB,Williams,5.0,10.0,40.0,7.0
+8,monaco,ALB,Williams,9.0,2.0,42.0,8.0
+9,spanish,ALB,Williams,19.0,0.0,42.0,8.0
+10,canadian,ALB,Williams,20.0,0.0,42.0,8.0
+11,austrian,ALB,Williams,17.0,0.0,42.0,8.0
+12,british,ALB,Williams,8.0,4.0,46.0,8.0
+13,belgian,ALB,Williams,6.0,8.0,54.0,8.0
+14,hungarian,ALB,Williams,15.0,0.0,54.0,8.0
+15,dutch,ALB,Williams,5.0,10.0,64.0,7.0
+16,italian,ALB,Williams,7.0,6.0,70.0,7.0
+17,azerbaijan,ALB,Williams,13.0,0.0,70.0,8.0
+18,singapore,ALB,Williams,14.0,0.0,70.0,8.0
+19,united_states,ALB,Williams,14.0,0.0,70.0,8.0
+20,mexico_city,ALB,Williams,12.0,0.0,70.0,8.0
+21,são_paulo,ALB,Williams,11.0,0.0,70.0,8.0
+22,las_vegas,ALB,Williams,16.0,0.0,70.0,8.0
+23,qatar,ALB,Williams,11.0,0.0,70.0,8.0
+24,abu_dhabi,ALB,Williams,16.0,0.0,70.0,8.0
+1,australian,ALO,Aston Martin,17.0,0.0,0.0,11.0
+2,chinese,ALO,Aston Martin,17.0,0.0,0.0,14.0
+3,japanese,ALO,Aston Martin,11.0,0.0,0.0,15.0
+4,bahrain,ALO,Aston Martin,15.0,0.0,0.0,17.0
+5,saudi_arabian,ALO,Aston Martin,11.0,0.0,0.0,17.0
+6,miami,ALO,Aston Martin,15.0,0.0,0.0,17.0
+7,emilia_romagna,ALO,Aston Martin,11.0,0.0,0.0,17.0
+8,monaco,ALO,Aston Martin,19.0,0.0,0.0,18.0
+9,spanish,ALO,Aston Martin,9.0,2.0,2.0,17.0
+10,canadian,ALO,Aston Martin,7.0,6.0,8.0,15.0
+11,austrian,ALO,Aston Martin,7.0,6.0,14.0,12.0
+12,british,ALO,Aston Martin,9.0,2.0,16.0,13.0
+13,belgian,ALO,Aston Martin,17.0,0.0,16.0,13.0
+14,hungarian,ALO,Aston Martin,5.0,10.0,26.0,10.0
+15,dutch,ALO,Aston Martin,8.0,4.0,30.0,11.0
+16,italian,ALO,Aston Martin,19.0,0.0,30.0,11.0
+17,azerbaijan,ALO,Aston Martin,15.0,0.0,30.0,11.0
+18,singapore,ALO,Aston Martin,7.0,6.0,36.0,11.0
+19,united_states,ALO,Aston Martin,10.0,1.0,37.0,11.0
+20,mexico_city,ALO,Aston Martin,18.0,0.0,37.0,11.0
+21,são_paulo,ALO,Aston Martin,14.0,0.0,37.0,12.0
+22,las_vegas,ALO,Aston Martin,11.0,0.0,37.0,13.0
+23,qatar,ALO,Aston Martin,7.0,6.0,43.0,12.0
+24,abu_dhabi,ALO,Aston Martin,6.0,8.0,51.0,10.0
+1,australian,ANT,Mercedes,4.0,12.0,12.0,4.0
+2,chinese,ANT,Mercedes,6.0,8.0,20.0,5.0
+3,japanese,ANT,Mercedes,6.0,8.0,28.0,5.0
+4,bahrain,ANT,Mercedes,11.0,0.0,28.0,5.0
+5,saudi_arabian,ANT,Mercedes,6.0,8.0,36.0,6.0
+6,miami,ANT,Mercedes,6.0,8.0,44.0,6.0
+7,emilia_romagna,ANT,Mercedes,19.0,0.0,44.0,6.0
+8,monaco,ANT,Mercedes,18.0,0.0,44.0,7.0
+9,spanish,ANT,Mercedes,18.0,0.0,44.0,7.0
+10,canadian,ANT,Mercedes,3.0,15.0,59.0,7.0
+11,austrian,ANT,Mercedes,19.0,0.0,59.0,7.0
+12,british,ANT,Mercedes,16.0,0.0,59.0,7.0
+13,belgian,ANT,Mercedes,16.0,0.0,59.0,7.0
+14,hungarian,ANT,Mercedes,10.0,1.0,60.0,7.0
+15,dutch,ANT,Mercedes,16.0,0.0,60.0,8.0
+16,italian,ANT,Mercedes,9.0,2.0,62.0,8.0
+17,azerbaijan,ANT,Mercedes,4.0,12.0,74.0,7.0
+18,singapore,ANT,Mercedes,5.0,10.0,84.0,7.0
+19,united_states,ANT,Mercedes,13.0,0.0,84.0,7.0
+20,mexico_city,ANT,Mercedes,6.0,8.0,92.0,7.0
+21,são_paulo,ANT,Mercedes,2.0,18.0,110.0,7.0
+22,las_vegas,ANT,Mercedes,3.0,15.0,125.0,7.0
+23,qatar,ANT,Mercedes,5.0,10.0,135.0,6.0
+24,abu_dhabi,ANT,Mercedes,15.0,0.0,135.0,6.0
+1,australian,BEA,Haas F1 Team,14.0,0.0,0.0,11.0
+2,chinese,BEA,Haas F1 Team,8.0,4.0,4.0,10.0
+3,japanese,BEA,Haas F1 Team,10.0,1.0,5.0,12.0
+4,bahrain,BEA,Haas F1 Team,10.0,1.0,6.0,11.0
+5,saudi_arabian,BEA,Haas F1 Team,13.0,0.0,6.0,11.0
+6,miami,BEA,Haas F1 Team,19.0,0.0,6.0,12.0
+7,emilia_romagna,BEA,Haas F1 Team,17.0,0.0,6.0,13.0
+8,monaco,BEA,Haas F1 Team,12.0,0.0,6.0,13.0
+9,spanish,BEA,Haas F1 Team,17.0,0.0,6.0,14.0
+10,canadian,BEA,Haas F1 Team,11.0,0.0,6.0,16.0
+11,austrian,BEA,Haas F1 Team,11.0,0.0,6.0,17.0
+12,british,BEA,Haas F1 Team,11.0,0.0,6.0,17.0
+13,belgian,BEA,Haas F1 Team,11.0,0.0,6.0,17.0
+14,hungarian,BEA,Haas F1 Team,20.0,0.0,6.0,18.0
+15,dutch,BEA,Haas F1 Team,6.0,8.0,14.0,16.0
+16,italian,BEA,Haas F1 Team,12.0,0.0,14.0,17.0
+17,azerbaijan,BEA,Haas F1 Team,12.0,0.0,14.0,18.0
+18,singapore,BEA,Haas F1 Team,9.0,2.0,16.0,18.0
+19,united_states,BEA,Haas F1 Team,9.0,2.0,18.0,18.0
+20,mexico_city,BEA,Haas F1 Team,4.0,12.0,30.0,12.0
+21,são_paulo,BEA,Haas F1 Team,6.0,8.0,38.0,11.0
+22,las_vegas,BEA,Haas F1 Team,10.0,1.0,39.0,11.0
+23,qatar,BEA,Haas F1 Team,19.0,0.0,39.0,13.0
+24,abu_dhabi,BEA,Haas F1 Team,12.0,0.0,39.0,13.0
+1,australian,BOR,Kick Sauber,16.0,0.0,0.0,11.0
+2,chinese,BOR,Kick Sauber,14.0,0.0,0.0,14.0
+3,japanese,BOR,Kick Sauber,19.0,0.0,0.0,15.0
+4,bahrain,BOR,Kick Sauber,18.0,0.0,0.0,17.0
+5,saudi_arabian,BOR,Kick Sauber,18.0,0.0,0.0,17.0
+6,miami,BOR,Kick Sauber,18.0,0.0,0.0,17.0
+7,emilia_romagna,BOR,Kick Sauber,18.0,0.0,0.0,17.0
+8,monaco,BOR,Kick Sauber,14.0,0.0,0.0,18.0
+9,spanish,BOR,Kick Sauber,12.0,0.0,0.0,18.0
+10,canadian,BOR,Kick Sauber,14.0,0.0,0.0,19.0
+11,austrian,BOR,Kick Sauber,8.0,4.0,4.0,18.0
+12,british,BOR,Kick Sauber,18.0,0.0,4.0,18.0
+13,belgian,BOR,Kick Sauber,9.0,2.0,6.0,17.0
+14,hungarian,BOR,Kick Sauber,6.0,8.0,14.0,16.0
+15,dutch,BOR,Kick Sauber,15.0,0.0,14.0,16.0
+16,italian,BOR,Kick Sauber,8.0,4.0,18.0,16.0
+17,azerbaijan,BOR,Kick Sauber,11.0,0.0,18.0,17.0
+18,singapore,BOR,Kick Sauber,17.0,0.0,18.0,17.0
+19,united_states,BOR,Kick Sauber,18.0,0.0,18.0,18.0
+20,mexico_city,BOR,Kick Sauber,10.0,1.0,19.0,18.0
+21,são_paulo,BOR,Kick Sauber,20.0,0.0,19.0,19.0
+22,las_vegas,BOR,Kick Sauber,17.0,0.0,19.0,19.0
+23,qatar,BOR,Kick Sauber,13.0,0.0,19.0,19.0
+24,abu_dhabi,BOR,Kick Sauber,11.0,0.0,19.0,19.0
+7,emilia_romagna,COL,Alpine,16.0,0.0,0.0,17.0
+8,monaco,COL,Alpine,13.0,0.0,0.0,18.0
+9,spanish,COL,Alpine,15.0,0.0,0.0,18.0
+10,canadian,COL,Alpine,13.0,0.0,0.0,19.0
+11,austrian,COL,Alpine,15.0,0.0,0.0,20.0
+12,british,COL,Alpine,20.0,0.0,0.0,20.0
+13,belgian,COL,Alpine,19.0,0.0,0.0,20.0
+14,hungarian,COL,Alpine,18.0,0.0,0.0,20.0
+15,dutch,COL,Alpine,11.0,0.0,0.0,20.0
+16,italian,COL,Alpine,17.0,0.0,0.0,20.0
+17,azerbaijan,COL,Alpine,19.0,0.0,0.0,20.0
+18,singapore,COL,Alpine,16.0,0.0,0.0,20.0
+19,united_states,COL,Alpine,17.0,0.0,0.0,20.0
+20,mexico_city,COL,Alpine,16.0,0.0,0.0,20.0
+21,são_paulo,COL,Alpine,15.0,0.0,0.0,20.0
+22,las_vegas,COL,Alpine,15.0,0.0,0.0,20.0
+23,qatar,COL,Alpine,14.0,0.0,0.0,20.0
+24,abu_dhabi,COL,Alpine,20.0,0.0,0.0,20.0
+1,australian,DOO,Alpine,19.0,0.0,0.0,11.0
+2,chinese,DOO,Alpine,13.0,0.0,0.0,14.0
+3,japanese,DOO,Alpine,15.0,0.0,0.0,15.0
+4,bahrain,DOO,Alpine,14.0,0.0,0.0,17.0
+5,saudi_arabian,DOO,Alpine,17.0,0.0,0.0,17.0
+6,miami,DOO,Alpine,20.0,0.0,0.0,17.0
+1,australian,GAS,Alpine,11.0,0.0,0.0,11.0
+2,chinese,GAS,Alpine,20.0,0.0,0.0,14.0
+3,japanese,GAS,Alpine,13.0,0.0,0.0,15.0
+4,bahrain,GAS,Alpine,7.0,6.0,6.0,11.0
+5,saudi_arabian,GAS,Alpine,20.0,0.0,6.0,11.0
+6,miami,GAS,Alpine,13.0,0.0,6.0,12.0
+7,emilia_romagna,GAS,Alpine,13.0,0.0,6.0,13.0
+8,monaco,GAS,Alpine,20.0,0.0,6.0,13.0
+9,spanish,GAS,Alpine,8.0,4.0,10.0,13.0
+10,canadian,GAS,Alpine,15.0,0.0,10.0,13.0
+11,austrian,GAS,Alpine,13.0,0.0,10.0,15.0
+12,british,GAS,Alpine,6.0,8.0,18.0,12.0
+13,belgian,GAS,Alpine,10.0,1.0,19.0,12.0
+14,hungarian,GAS,Alpine,19.0,0.0,19.0,15.0
+15,dutch,GAS,Alpine,17.0,0.0,19.0,15.0
+16,italian,GAS,Alpine,16.0,0.0,19.0,15.0
+17,azerbaijan,GAS,Alpine,18.0,0.0,19.0,16.0
+18,singapore,GAS,Alpine,19.0,0.0,19.0,16.0
+19,united_states,GAS,Alpine,19.0,0.0,19.0,17.0
+20,mexico_city,GAS,Alpine,15.0,0.0,19.0,18.0
+21,são_paulo,GAS,Alpine,10.0,1.0,20.0,17.0
+22,las_vegas,GAS,Alpine,13.0,0.0,20.0,17.0
+23,qatar,GAS,Alpine,16.0,0.0,20.0,18.0
+24,abu_dhabi,GAS,Alpine,19.0,0.0,20.0,18.0
+1,australian,HAD,Racing Bulls,20.0,0.0,0.0,11.0
+2,chinese,HAD,Racing Bulls,11.0,0.0,0.0,14.0
+3,japanese,HAD,Racing Bulls,8.0,4.0,4.0,13.0
+4,bahrain,HAD,Racing Bulls,13.0,0.0,4.0,14.0
+5,saudi_arabian,HAD,Racing Bulls,10.0,1.0,5.0,14.0
+6,miami,HAD,Racing Bulls,11.0,0.0,5.0,15.0
+7,emilia_romagna,HAD,Racing Bulls,9.0,2.0,7.0,12.0
+8,monaco,HAD,Racing Bulls,6.0,8.0,15.0,10.0
+9,spanish,HAD,Racing Bulls,7.0,6.0,21.0,9.0
+10,canadian,HAD,Racing Bulls,16.0,0.0,21.0,10.0
+11,austrian,HAD,Racing Bulls,12.0,0.0,21.0,11.0
+12,british,HAD,Racing Bulls,17.0,0.0,21.0,11.0
+13,belgian,HAD,Racing Bulls,20.0,0.0,21.0,11.0
+14,hungarian,HAD,Racing Bulls,11.0,0.0,21.0,13.0
+15,dutch,HAD,Racing Bulls,3.0,15.0,36.0,10.0
+16,italian,HAD,Racing Bulls,10.0,1.0,37.0,9.0
+17,azerbaijan,HAD,Racing Bulls,10.0,1.0,38.0,9.0
+18,singapore,HAD,Racing Bulls,11.0,0.0,38.0,9.0
+19,united_states,HAD,Racing Bulls,16.0,0.0,38.0,10.0
+20,mexico_city,HAD,Racing Bulls,13.0,0.0,38.0,10.0
+21,são_paulo,HAD,Racing Bulls,8.0,4.0,42.0,10.0
+22,las_vegas,HAD,Racing Bulls,6.0,8.0,50.0,9.0
+23,qatar,HAD,Racing Bulls,18.0,0.0,50.0,10.0
+24,abu_dhabi,HAD,Racing Bulls,17.0,0.0,50.0,12.0
+1,australian,HAM,Ferrari,10.0,1.0,1.0,10.0
+2,chinese,HAM,Ferrari,19.0,0.0,1.0,12.0
+3,japanese,HAM,Ferrari,7.0,6.0,7.0,10.0
+4,bahrain,HAM,Ferrari,5.0,10.0,17.0,8.0
+5,saudi_arabian,HAM,Ferrari,7.0,6.0,23.0,7.0
+6,miami,HAM,Ferrari,8.0,4.0,27.0,8.0
+7,emilia_romagna,HAM,Ferrari,4.0,12.0,39.0,8.0
+8,monaco,HAM,Ferrari,5.0,10.0,49.0,6.0
+9,spanish,HAM,Ferrari,6.0,8.0,57.0,6.0
+10,canadian,HAM,Ferrari,6.0,8.0,65.0,6.0
+11,austrian,HAM,Ferrari,4.0,12.0,77.0,6.0
+12,british,HAM,Ferrari,4.0,12.0,89.0,6.0
+13,belgian,HAM,Ferrari,7.0,6.0,95.0,6.0
+14,hungarian,HAM,Ferrari,12.0,0.0,95.0,6.0
+15,dutch,HAM,Ferrari,20.0,0.0,95.0,6.0
+16,italian,HAM,Ferrari,6.0,8.0,103.0,6.0
+17,azerbaijan,HAM,Ferrari,8.0,4.0,107.0,6.0
+18,singapore,HAM,Ferrari,8.0,4.0,111.0,6.0
+19,united_states,HAM,Ferrari,4.0,12.0,123.0,6.0
+20,mexico_city,HAM,Ferrari,8.0,4.0,127.0,6.0
+21,são_paulo,HAM,Ferrari,18.0,0.0,127.0,6.0
+22,las_vegas,HAM,Ferrari,8.0,4.0,131.0,6.0
+23,qatar,HAM,Ferrari,12.0,0.0,131.0,7.0
+24,abu_dhabi,HAM,Ferrari,8.0,4.0,135.0,6.0
+1,australian,HUL,Kick Sauber,7.0,6.0,6.0,7.0
+2,chinese,HUL,Kick Sauber,15.0,0.0,6.0,9.0
+3,japanese,HUL,Kick Sauber,16.0,0.0,6.0,11.0
+4,bahrain,HUL,Kick Sauber,20.0,0.0,6.0,11.0
+5,saudi_arabian,HUL,Kick Sauber,15.0,0.0,6.0,11.0
+6,miami,HUL,Kick Sauber,14.0,0.0,6.0,12.0
+7,emilia_romagna,HUL,Kick Sauber,12.0,0.0,6.0,13.0
+8,monaco,HUL,Kick Sauber,16.0,0.0,6.0,13.0
+9,spanish,HUL,Kick Sauber,5.0,10.0,16.0,11.0
+10,canadian,HUL,Kick Sauber,8.0,4.0,20.0,11.0
+11,austrian,HUL,Kick Sauber,9.0,2.0,22.0,10.0
+12,british,HUL,Kick Sauber,3.0,15.0,37.0,9.0
+13,belgian,HUL,Kick Sauber,12.0,0.0,37.0,9.0
+14,hungarian,HUL,Kick Sauber,13.0,0.0,37.0,9.0
+15,dutch,HUL,Kick Sauber,14.0,0.0,37.0,9.0
+16,italian,HUL,Kick Sauber,20.0,0.0,37.0,9.0
+17,azerbaijan,HUL,Kick Sauber,16.0,0.0,37.0,10.0
+18,singapore,HUL,Kick Sauber,20.0,0.0,37.0,10.0
+19,united_states,HUL,Kick Sauber,8.0,4.0,41.0,9.0
+20,mexico_city,HUL,Kick Sauber,19.0,0.0,41.0,9.0
+21,são_paulo,HUL,Kick Sauber,9.0,2.0,43.0,9.0
+22,las_vegas,HUL,Kick Sauber,7.0,6.0,49.0,10.0
+23,qatar,HUL,Kick Sauber,20.0,0.0,49.0,11.0
+24,abu_dhabi,HUL,Kick Sauber,9.0,2.0,51.0,10.0
+1,australian,LAW,Red Bull Racing,15.0,0.0,0.0,11.0
+2,chinese,LAW,Red Bull Racing,12.0,0.0,0.0,14.0
+3,japanese,LAW,Racing Bulls,17.0,0.0,0.0,15.0
+4,bahrain,LAW,Racing Bulls,16.0,0.0,0.0,17.0
+5,saudi_arabian,LAW,Racing Bulls,12.0,0.0,0.0,17.0
+6,miami,LAW,Racing Bulls,17.0,0.0,0.0,17.0
+7,emilia_romagna,LAW,Racing Bulls,14.0,0.0,0.0,17.0
+8,monaco,LAW,Racing Bulls,8.0,4.0,4.0,16.0
+9,spanish,LAW,Racing Bulls,11.0,0.0,4.0,15.0
+10,canadian,LAW,Racing Bulls,19.0,0.0,4.0,17.0
+11,austrian,LAW,Racing Bulls,6.0,8.0,12.0,14.0
+12,british,LAW,Racing Bulls,19.0,0.0,12.0,16.0
+13,belgian,LAW,Racing Bulls,8.0,4.0,16.0,13.0
+14,hungarian,LAW,Racing Bulls,8.0,4.0,20.0,14.0
+15,dutch,LAW,Racing Bulls,12.0,0.0,20.0,14.0
+16,italian,LAW,Racing Bulls,14.0,0.0,20.0,14.0
+17,azerbaijan,LAW,Racing Bulls,5.0,10.0,30.0,11.0
+18,singapore,LAW,Racing Bulls,15.0,0.0,30.0,12.0
+19,united_states,LAW,Racing Bulls,11.0,0.0,30.0,12.0
+20,mexico_city,LAW,Racing Bulls,20.0,0.0,30.0,12.0
+21,são_paulo,LAW,Racing Bulls,7.0,6.0,36.0,13.0
+22,las_vegas,LAW,Racing Bulls,14.0,0.0,36.0,14.0
+23,qatar,LAW,Racing Bulls,9.0,2.0,38.0,14.0
+24,abu_dhabi,LAW,Racing Bulls,18.0,0.0,38.0,14.0
+1,australian,LEC,Ferrari,8.0,4.0,4.0,8.0
+2,chinese,LEC,Ferrari,18.0,0.0,4.0,10.0
+3,japanese,LEC,Ferrari,4.0,12.0,16.0,7.0
+4,bahrain,LEC,Ferrari,4.0,12.0,28.0,5.0
+5,saudi_arabian,LEC,Ferrari,3.0,15.0,43.0,5.0
+6,miami,LEC,Ferrari,7.0,6.0,49.0,5.0
+7,emilia_romagna,LEC,Ferrari,6.0,8.0,57.0,5.0
+8,monaco,LEC,Ferrari,2.0,18.0,75.0,5.0
+9,spanish,LEC,Ferrari,3.0,15.0,90.0,5.0
+10,canadian,LEC,Ferrari,5.0,10.0,100.0,5.0
+11,austrian,LEC,Ferrari,3.0,15.0,115.0,5.0
+12,british,LEC,Ferrari,14.0,0.0,115.0,5.0
+13,belgian,LEC,Ferrari,3.0,15.0,130.0,5.0
+14,hungarian,LEC,Ferrari,4.0,12.0,142.0,5.0
+15,dutch,LEC,Ferrari,19.0,0.0,142.0,5.0
+16,italian,LEC,Ferrari,4.0,12.0,154.0,5.0
+17,azerbaijan,LEC,Ferrari,9.0,2.0,156.0,5.0
+18,singapore,LEC,Ferrari,6.0,8.0,164.0,5.0
+19,united_states,LEC,Ferrari,3.0,15.0,179.0,5.0
+20,mexico_city,LEC,Ferrari,2.0,18.0,197.0,5.0
+21,são_paulo,LEC,Ferrari,19.0,0.0,197.0,5.0
+22,las_vegas,LEC,Ferrari,4.0,12.0,209.0,5.0
+23,qatar,LEC,Ferrari,8.0,4.0,213.0,5.0
+24,abu_dhabi,LEC,Ferrari,4.0,12.0,225.0,5.0
+1,australian,NOR,McLaren,1.0,25.0,25.0,1.0
+2,chinese,NOR,McLaren,2.0,18.0,43.0,1.0
+3,japanese,NOR,McLaren,2.0,18.0,61.0,1.0
+4,bahrain,NOR,McLaren,3.0,15.0,76.0,1.0
+5,saudi_arabian,NOR,McLaren,4.0,12.0,88.0,2.0
+6,miami,NOR,McLaren,2.0,18.0,106.0,2.0
+7,emilia_romagna,NOR,McLaren,2.0,18.0,124.0,2.0
+8,monaco,NOR,McLaren,1.0,25.0,149.0,1.0
+9,spanish,NOR,McLaren,2.0,18.0,167.0,2.0
+10,canadian,NOR,McLaren,18.0,0.0,167.0,2.0
+11,austrian,NOR,McLaren,1.0,25.0,192.0,2.0
+12,british,NOR,McLaren,1.0,25.0,217.0,2.0
+13,belgian,NOR,McLaren,2.0,18.0,235.0,2.0
+14,hungarian,NOR,McLaren,1.0,25.0,260.0,2.0
+15,dutch,NOR,McLaren,18.0,0.0,260.0,2.0
+16,italian,NOR,McLaren,2.0,18.0,278.0,2.0
+17,azerbaijan,NOR,McLaren,7.0,6.0,284.0,2.0
+18,singapore,NOR,McLaren,3.0,15.0,299.0,2.0
+19,united_states,NOR,McLaren,2.0,18.0,317.0,2.0
+20,mexico_city,NOR,McLaren,1.0,25.0,342.0,1.0
+21,são_paulo,NOR,McLaren,1.0,25.0,367.0,1.0
+22,las_vegas,NOR,McLaren,19.0,0.0,367.0,1.0
+23,qatar,NOR,McLaren,4.0,12.0,379.0,1.0
+24,abu_dhabi,NOR,McLaren,3.0,15.0,394.0,1.0
+1,australian,OCO,Haas F1 Team,13.0,0.0,0.0,11.0
+2,chinese,OCO,Haas F1 Team,5.0,10.0,10.0,7.0
+3,japanese,OCO,Haas F1 Team,18.0,0.0,10.0,8.0
+4,bahrain,OCO,Haas F1 Team,8.0,4.0,14.0,9.0
+5,saudi_arabian,OCO,Haas F1 Team,14.0,0.0,14.0,9.0
+6,miami,OCO,Haas F1 Team,12.0,0.0,14.0,9.0
+7,emilia_romagna,OCO,Haas F1 Team,20.0,0.0,14.0,9.0
+8,monaco,OCO,Haas F1 Team,7.0,6.0,20.0,9.0
+9,spanish,OCO,Haas F1 Team,16.0,0.0,20.0,10.0
+10,canadian,OCO,Haas F1 Team,9.0,2.0,22.0,9.0
+11,austrian,OCO,Haas F1 Team,10.0,1.0,23.0,9.0
+12,british,OCO,Haas F1 Team,13.0,0.0,23.0,10.0
+13,belgian,OCO,Haas F1 Team,15.0,0.0,23.0,10.0
+14,hungarian,OCO,Haas F1 Team,16.0,0.0,23.0,11.0
+15,dutch,OCO,Haas F1 Team,10.0,1.0,24.0,13.0
+16,italian,OCO,Haas F1 Team,15.0,0.0,24.0,13.0
+17,azerbaijan,OCO,Haas F1 Team,14.0,0.0,24.0,15.0
+18,singapore,OCO,Haas F1 Team,18.0,0.0,24.0,15.0
+19,united_states,OCO,Haas F1 Team,15.0,0.0,24.0,15.0
+20,mexico_city,OCO,Haas F1 Team,9.0,2.0,26.0,16.0
+21,são_paulo,OCO,Haas F1 Team,12.0,0.0,26.0,16.0
+22,las_vegas,OCO,Haas F1 Team,9.0,2.0,28.0,15.0
+23,qatar,OCO,Haas F1 Team,15.0,0.0,28.0,15.0
+24,abu_dhabi,OCO,Haas F1 Team,7.0,6.0,34.0,15.0
+1,australian,PIA,McLaren,9.0,2.0,2.0,9.0
+2,chinese,PIA,McLaren,1.0,25.0,27.0,4.0
+3,japanese,PIA,McLaren,3.0,15.0,42.0,3.0
+4,bahrain,PIA,McLaren,1.0,25.0,67.0,2.0
+5,saudi_arabian,PIA,McLaren,1.0,25.0,92.0,1.0
+6,miami,PIA,McLaren,1.0,25.0,117.0,1.0
+7,emilia_romagna,PIA,McLaren,3.0,15.0,132.0,1.0
+8,monaco,PIA,McLaren,3.0,15.0,147.0,2.0
+9,spanish,PIA,McLaren,1.0,25.0,172.0,1.0
+10,canadian,PIA,McLaren,4.0,12.0,184.0,1.0
+11,austrian,PIA,McLaren,2.0,18.0,202.0,1.0
+12,british,PIA,McLaren,2.0,18.0,220.0,1.0
+13,belgian,PIA,McLaren,1.0,25.0,245.0,1.0
+14,hungarian,PIA,McLaren,2.0,18.0,263.0,1.0
+15,dutch,PIA,McLaren,1.0,25.0,288.0,1.0
+16,italian,PIA,McLaren,3.0,15.0,303.0,1.0
+17,azerbaijan,PIA,McLaren,20.0,0.0,303.0,1.0
+18,singapore,PIA,McLaren,4.0,12.0,315.0,1.0
+19,united_states,PIA,McLaren,5.0,10.0,325.0,1.0
+20,mexico_city,PIA,McLaren,5.0,10.0,335.0,2.0
+21,são_paulo,PIA,McLaren,5.0,10.0,345.0,2.0
+22,las_vegas,PIA,McLaren,20.0,0.0,345.0,2.0
+23,qatar,PIA,McLaren,2.0,18.0,363.0,3.0
+24,abu_dhabi,PIA,McLaren,2.0,18.0,381.0,3.0
+1,australian,RUS,Mercedes,3.0,15.0,15.0,3.0
+2,chinese,RUS,Mercedes,3.0,15.0,30.0,2.0
+3,japanese,RUS,Mercedes,5.0,10.0,40.0,4.0
+4,bahrain,RUS,Mercedes,2.0,18.0,58.0,4.0
+5,saudi_arabian,RUS,Mercedes,5.0,10.0,68.0,4.0
+6,miami,RUS,Mercedes,3.0,15.0,83.0,4.0
+7,emilia_romagna,RUS,Mercedes,7.0,6.0,89.0,4.0
+8,monaco,RUS,Mercedes,11.0,0.0,89.0,4.0
+9,spanish,RUS,Mercedes,4.0,12.0,101.0,4.0
+10,canadian,RUS,Mercedes,1.0,25.0,126.0,4.0
+11,austrian,RUS,Mercedes,5.0,10.0,136.0,4.0
+12,british,RUS,Mercedes,10.0,1.0,137.0,4.0
+13,belgian,RUS,Mercedes,5.0,10.0,147.0,4.0
+14,hungarian,RUS,Mercedes,3.0,15.0,162.0,4.0
+15,dutch,RUS,Mercedes,4.0,12.0,174.0,4.0
+16,italian,RUS,Mercedes,5.0,10.0,184.0,4.0
+17,azerbaijan,RUS,Mercedes,2.0,18.0,202.0,4.0
+18,singapore,RUS,Mercedes,1.0,25.0,227.0,4.0
+19,united_states,RUS,Mercedes,6.0,8.0,235.0,4.0
+20,mexico_city,RUS,Mercedes,7.0,6.0,241.0,4.0
+21,são_paulo,RUS,Mercedes,4.0,12.0,253.0,4.0
+22,las_vegas,RUS,Mercedes,2.0,18.0,271.0,4.0
+23,qatar,RUS,Mercedes,6.0,8.0,279.0,4.0
+24,abu_dhabi,RUS,Mercedes,5.0,10.0,289.0,4.0
+1,australian,SAI,Williams,18.0,0.0,0.0,11.0
+2,chinese,SAI,Williams,10.0,1.0,1.0,12.0
+3,japanese,SAI,Williams,14.0,0.0,1.0,14.0
+4,bahrain,SAI,Williams,19.0,0.0,1.0,16.0
+5,saudi_arabian,SAI,Williams,8.0,4.0,5.0,14.0
+6,miami,SAI,Williams,9.0,2.0,7.0,11.0
+7,emilia_romagna,SAI,Williams,8.0,4.0,11.0,10.0
+8,monaco,SAI,Williams,10.0,1.0,12.0,11.0
+9,spanish,SAI,Williams,14.0,0.0,12.0,12.0
+10,canadian,SAI,Williams,10.0,1.0,13.0,12.0
+11,austrian,SAI,Williams,20.0,0.0,13.0,13.0
+12,british,SAI,Williams,12.0,0.0,13.0,15.0
+13,belgian,SAI,Williams,18.0,0.0,13.0,16.0
+14,hungarian,SAI,Williams,14.0,0.0,13.0,17.0
+15,dutch,SAI,Williams,13.0,0.0,13.0,18.0
+16,italian,SAI,Williams,11.0,0.0,13.0,18.0
+17,azerbaijan,SAI,Williams,3.0,15.0,28.0,13.0
+18,singapore,SAI,Williams,10.0,1.0,29.0,13.0
+19,united_states,SAI,Williams,20.0,0.0,29.0,13.0
+20,mexico_city,SAI,Williams,17.0,0.0,29.0,14.0
+21,são_paulo,SAI,Williams,13.0,0.0,29.0,14.0
+22,las_vegas,SAI,Williams,5.0,10.0,39.0,11.0
+23,qatar,SAI,Williams,3.0,15.0,54.0,9.0
+24,abu_dhabi,SAI,Williams,13.0,0.0,54.0,9.0
+1,australian,STR,Aston Martin,6.0,8.0,8.0,6.0
+2,chinese,STR,Aston Martin,9.0,2.0,10.0,7.0
+3,japanese,STR,Aston Martin,20.0,0.0,10.0,8.0
+4,bahrain,STR,Aston Martin,17.0,0.0,10.0,10.0
+5,saudi_arabian,STR,Aston Martin,16.0,0.0,10.0,10.0
+6,miami,STR,Aston Martin,16.0,0.0,10.0,10.0
+7,emilia_romagna,STR,Aston Martin,15.0,0.0,10.0,11.0
+8,monaco,STR,Aston Martin,15.0,0.0,10.0,12.0
+10,canadian,STR,Aston Martin,17.0,0.0,10.0,13.0
+11,austrian,STR,Aston Martin,14.0,0.0,10.0,15.0
+12,british,STR,Aston Martin,7.0,6.0,16.0,13.0
+13,belgian,STR,Aston Martin,14.0,0.0,16.0,13.0
+14,hungarian,STR,Aston Martin,7.0,6.0,22.0,12.0
+15,dutch,STR,Aston Martin,7.0,6.0,28.0,12.0
+16,italian,STR,Aston Martin,18.0,0.0,28.0,12.0
+17,azerbaijan,STR,Aston Martin,17.0,0.0,28.0,13.0
+18,singapore,STR,Aston Martin,13.0,0.0,28.0,14.0
+19,united_states,STR,Aston Martin,12.0,0.0,28.0,14.0
+20,mexico_city,STR,Aston Martin,14.0,0.0,28.0,15.0
+21,são_paulo,STR,Aston Martin,16.0,0.0,28.0,15.0
+22,las_vegas,STR,Aston Martin,18.0,0.0,28.0,15.0
+23,qatar,STR,Aston Martin,17.0,0.0,28.0,15.0
+24,abu_dhabi,STR,Aston Martin,10.0,1.0,29.0,16.0
+1,australian,TSU,Racing Bulls,12.0,0.0,0.0,11.0
+2,chinese,TSU,Racing Bulls,16.0,0.0,0.0,14.0
+3,japanese,TSU,Red Bull Racing,12.0,0.0,0.0,15.0
+4,bahrain,TSU,Red Bull Racing,9.0,2.0,2.0,15.0
+5,saudi_arabian,TSU,Red Bull Racing,19.0,0.0,2.0,16.0
+6,miami,TSU,Red Bull Racing,10.0,1.0,3.0,16.0
+7,emilia_romagna,TSU,Red Bull Racing,10.0,1.0,4.0,16.0
+8,monaco,TSU,Red Bull Racing,17.0,0.0,4.0,16.0
+9,spanish,TSU,Red Bull Racing,13.0,0.0,4.0,15.0
+10,canadian,TSU,Red Bull Racing,12.0,0.0,4.0,17.0
+11,austrian,TSU,Red Bull Racing,16.0,0.0,4.0,18.0
+12,british,TSU,Red Bull Racing,15.0,0.0,4.0,18.0
+13,belgian,TSU,Red Bull Racing,13.0,0.0,4.0,19.0
+14,hungarian,TSU,Red Bull Racing,17.0,0.0,4.0,19.0
+15,dutch,TSU,Red Bull Racing,9.0,2.0,6.0,19.0
+16,italian,TSU,Red Bull Racing,13.0,0.0,6.0,19.0
+17,azerbaijan,TSU,Red Bull Racing,6.0,8.0,14.0,18.0
+18,singapore,TSU,Red Bull Racing,12.0,0.0,14.0,19.0
+19,united_states,TSU,Red Bull Racing,7.0,6.0,20.0,16.0
+20,mexico_city,TSU,Red Bull Racing,11.0,0.0,20.0,17.0
+21,são_paulo,TSU,Red Bull Racing,17.0,0.0,20.0,17.0
+22,las_vegas,TSU,Red Bull Racing,12.0,0.0,20.0,17.0
+23,qatar,TSU,Red Bull Racing,10.0,1.0,21.0,17.0
+24,abu_dhabi,TSU,Red Bull Racing,14.0,0.0,21.0,17.0
+1,australian,VER,Red Bull Racing,2.0,18.0,18.0,2.0
+2,chinese,VER,Red Bull Racing,4.0,12.0,30.0,2.0
+3,japanese,VER,Red Bull Racing,1.0,25.0,55.0,2.0
+4,bahrain,VER,Red Bull Racing,6.0,8.0,63.0,3.0
+5,saudi_arabian,VER,Red Bull Racing,2.0,18.0,81.0,3.0
+6,miami,VER,Red Bull Racing,4.0,12.0,93.0,3.0
+7,emilia_romagna,VER,Red Bull Racing,1.0,25.0,118.0,3.0
+8,monaco,VER,Red Bull Racing,4.0,12.0,130.0,3.0
+9,spanish,VER,Red Bull Racing,10.0,1.0,131.0,3.0
+10,canadian,VER,Red Bull Racing,2.0,18.0,149.0,3.0
+11,austrian,VER,Red Bull Racing,18.0,0.0,149.0,3.0
+12,british,VER,Red Bull Racing,5.0,10.0,159.0,3.0
+13,belgian,VER,Red Bull Racing,4.0,12.0,171.0,3.0
+14,hungarian,VER,Red Bull Racing,9.0,2.0,173.0,3.0
+15,dutch,VER,Red Bull Racing,2.0,18.0,191.0,3.0
+16,italian,VER,Red Bull Racing,1.0,25.0,216.0,3.0
+17,azerbaijan,VER,Red Bull Racing,1.0,25.0,241.0,3.0
+18,singapore,VER,Red Bull Racing,2.0,18.0,259.0,3.0
+19,united_states,VER,Red Bull Racing,1.0,25.0,284.0,3.0
+20,mexico_city,VER,Red Bull Racing,3.0,15.0,299.0,3.0
+21,são_paulo,VER,Red Bull Racing,3.0,15.0,314.0,3.0
+22,las_vegas,VER,Red Bull Racing,1.0,25.0,339.0,3.0
+23,qatar,VER,Red Bull Racing,1.0,25.0,364.0,2.0
+24,abu_dhabi,VER,Red Bull Racing,1.0,25.0,389.0,2.0

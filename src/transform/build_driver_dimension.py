@@ -1,8 +1,13 @@
+import sys
 import pandas as pd
 from pathlib import Path
 
 # Project root
 ROOT_DIR = Path(__file__).resolve().parents[2]
+
+sys.path.insert(0, str(ROOT_DIR))
+
+from src.utils.schedule import get_round_map
 
 
 def build_driver_dimension(year=2025):
@@ -32,6 +37,8 @@ def build_driver_dimension(year=2025):
 
     print(f"Found {len(races)} races")
 
+    round_map = get_round_map(year)
+
     all_drivers = []
 
     for race_folder in races:
@@ -39,6 +46,17 @@ def build_driver_dimension(year=2025):
         race_name = race_folder.name
 
         print(f"Processing {race_name}")
+
+        round_num = round_map.get(race_name)
+
+        if round_num is None:
+
+            print(
+                f"Skipping {race_name} "
+                f"(not found in season schedule)"
+            )
+
+            continue
 
         results_file = (
             race_folder
@@ -82,6 +100,8 @@ def build_driver_dimension(year=2025):
             required_columns
         ].copy()
 
+        drivers["Round"] = round_num
+
         all_drivers.append(drivers)
 
     if len(all_drivers) == 0:
@@ -97,8 +117,12 @@ def build_driver_dimension(year=2025):
 
     dim_driver = (
         dim_driver
-        .drop_duplicates()
-        .sort_values("DriverNumber")
+        .sort_values(["DriverNumber", "Round"])
+        .drop_duplicates(
+            subset="DriverNumber",
+            keep="last"
+        )
+        .drop(columns=["Round"])
         .reset_index(drop=True)
     )
 
