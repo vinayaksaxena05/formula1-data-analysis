@@ -8,8 +8,9 @@ ROOT_DIR = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT_DIR))
 
 from src.utils.schedule import get_race_folder_name
+from src.utils.cli import get_year
 
-year = 2025
+year = get_year(default=2025)
 
 processed_folder = ROOT_DIR / "data" / "processed"
 processed_folder.mkdir(parents=True, exist_ok=True)
@@ -71,7 +72,9 @@ dim_races["SprintWeekend"] = dim_races["EventFormat"].apply(
     lambda x: "Y" if "sprint" in x.lower() else "N"
 )
 
-dim_races = dim_races.drop(columns=["EventFormat"])
+# EventFormat is kept (not dropped) alongside the derived SprintWeekend
+# flag -- the warehouse's dim_race stores both the raw FastF1 event format
+# and the boolean convenience flag.
 
 output_file = processed_folder / f"dim_races_{year}.csv"
 

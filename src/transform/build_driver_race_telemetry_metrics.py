@@ -1,7 +1,12 @@
+import sys
 from pathlib import Path
 import pandas as pd
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
+
+sys.path.insert(0, str(ROOT_DIR))
+
+from src.utils.cli import get_year
 
 
 def build_driver_race_telemetry_metrics(year=2025):
@@ -102,5 +107,5 @@ def build_driver_race_telemetry_metrics(year=2025):
 
 
 if __name__ == "__main__":
-
-    build_driver_race_telemetry_metrics()
+    year = get_year(default=2025)
+    build_driver_race_telemetry_metrics(year=year)
