@@ -1,3 +1,4 @@
+import sys
 import pandas as pd
 from pathlib import Path
 
@@ -7,6 +8,10 @@ from sklearn.decomposition import PCA
 
 # Project root
 ROOT_DIR = Path(__file__).resolve().parents[2]
+
+sys.path.insert(0, str(ROOT_DIR))
+
+from src.utils.cli import get_year
 
 
 def build_driver_clusters(year=2025):
@@ -206,4 +211,5 @@ def build_driver_clusters(year=2025):
 
 
 if __name__ == "__main__":
-    build_driver_clusters()
+    year = get_year(default=2025)
+    build_driver_clusters(year=year)

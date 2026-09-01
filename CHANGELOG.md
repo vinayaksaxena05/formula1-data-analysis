@@ -5,6 +5,84 @@ log started 2026-08-17 as part of fixing correctness bugs found during an
 ETL review; every change from that point forward is recorded, not just
 bug fixes.
 
+## 2026-09-01
+
+### Added
+
+- `run_pipeline.py`: orchestrates the full pipeline (extract → transform →
+  load dimensions → load facts → create views → validate) with a
+  lightweight local stage cache, so a rerun skips stages that already
+  completed for a given season instead of redoing the whole pipeline.
+- `src/utils/pipeline_cache.py`: `is_completed(stage, year)`,
+  `mark_completed(stage, year)`, `invalidate(stage, year)`,
+  `clear_cache(year=None)`, backed by `.pipeline/state.json` (safe
+  read/write: falls back to an empty cache on a missing or corrupt state
+  file, writes via a temp file + atomic rename). `.pipeline/` added to
+  `.gitignore`.
+- `--force` flag on `run_pipeline.py`: re-runs every stage regardless of
+  cache state. Implemented by stripping `--force` out of `sys.argv` before
+  `src.utils.cli.get_year()` parses the remaining args, so the existing
+  year-resolution logic (CLI arg or interactive prompt) didn't need to
+  change.
+- The year resolved by `run_pipeline.py` (via prompt or CLI arg) is now
+  passed as `argv[1]` to every child script's `subprocess.run` call, so
+  each ETL script's own `get_year()` call picks it up instead of
+  independently prompting.
+
+### Fixed
+
+- `pipeline_cache._save_state()` called `json.dump(state, file, ident=4)`
+  — `ident` isn't a valid `json.dump` kwarg, so every `mark_completed()`
+  call raised `TypeError`. Fixed to `indent=4`.
+- `pipeline_cache._load_state()` returned `None` (bare `return`) on a
+  corrupt/unreadable state file instead of `{}`, which would crash
+  `is_completed()`/`mark_completed()` on the next call. Fixed to return
+  `{}`.
+- Every `run_script()` call site in `run_pipeline.py` was passing the
+  resolved `year` positionally into the `stage` parameter (and never
+  passing an actual year), so every stage's cache key collided on the
+  same integer value — completing one stage would incorrectly skip all
+  the others. All call sites now pass an explicit, unique stage name
+  (`extract_race_data`, `transform_season`, `create_dimensions`, etc.).
+- `run_script("src/load/create_views.py")` and
+  `run_script("src/load/validate_pipeline.py")` were called with no
+  `stage` argument at all — `TypeError: missing required positional
+  argument`, since `stage` has no default. Fixed by naming these stages
+  `create_views` and `validation`.
+- `src/load/create_views.py` and `src/load/validate_pipeline.py` printed
+  a `✓` checkmark, which crashed with `UnicodeEncodeError` under
+  Windows' default `cp1252` console encoding — meaning `create_views`
+  (and, transitively, `validation`) could never complete on this machine.
+  Both scripts now call `sys.stdout.reconfigure(encoding="utf-8")` right
+  after `import sys`.
+
+### Verification performed
+
+- `python -m py_compile` on all edited files.
+- Unit-level exercise of `is_completed`/`mark_completed`/`invalidate`/
+  `clear_cache` against a real `.pipeline/state.json`, including the
+  corrupt-state fallback path.
+- `run_script()`'s execute → skip → force-rerun → failure-not-cached
+  paths verified against disposable dummy scripts (no real ETL/DB
+  touched).
+- Verified `--force` argv-stripping against `python run_pipeline.py`,
+  `--force`, `2024 --force`, and `--force 2024` — all resolve the correct
+  `(year, force)` pair without disturbing `get_year()`'s own parsing.
+- Verified year-forwarding: a dummy child script echoing `sys.argv`
+  confirmed it receives the resolved year as `argv[1]`.
+- Full real run against the 2025 season (`python run_pipeline.py 2025`,
+  `python_ds` conda env): extraction, all 11 transforms, and all 4
+  Postgres load stages completed and cached correctly; `create_views`
+  failed on the pre-existing Unicode bug and was correctly left
+  uncached.
+- Re-run with no `--force`: all 17 previously-completed stages were
+  skipped instantly; only the uncached `create_views` re-attempted.
+- After the Unicode fix, `python run_pipeline.py 2025 --force`: full
+  pipeline re-ran end to end for real (9m43s) — extraction, transforms,
+  dimension/fact loads, view creation, and validation all completed and
+  passed every data-quality check (row counts, NULL keys, foreign keys,
+  season/race coverage, driver-race grain uniqueness).
+
 ## 2026-08-17
 
 ### Fixed

@@ -7,6 +7,8 @@ ROOT_DIR = Path(__file__).resolve().parents[2]
 
 sys.path.insert(0, str(ROOT_DIR))
 
+from src.utils.cli import get_year
+
 from src.utils.schedule import get_race_folder_name
 
 # Cache
@@ -105,4 +107,5 @@ def extract_race_data(year=2026):
 
 
 if __name__ == "__main__":
-    extract_race_data()
+    year = get_year(default=2026)
+    extract_race_data(year=year)
