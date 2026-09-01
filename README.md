@@ -287,28 +287,35 @@ Processed datasets are stored in SQLite and transformed into analytical tables o
 
 ## Dimension Tables
 
-### dim_driver
+### dim_drivers
 
-* Driver ID
-* Driver Name
-* Team
+* Driver Number
+* Abbreviation
+* First Name / Last Name / Full Name
+* Country Code
 
-### dim_team
+Team is intentionally not stored here: drivers change teams between (and
+occasionally within) seasons, so team is a per-race fact, not a permanent
+driver attribute.
 
-* Team ID
+### dim_teams
+
+* Team ID (constructor identifier)
 * Team Name
+* Team Color
 
-### dim_race
+### dim_races
 
-* Race ID
-* Circuit
-* Country
-* Season
+* Round Number
+* Race
+* Country / Location
+* Official Event Name
+* Event Date
+* Event Format / Sprint Weekend
 
-### dim_season
+### dim_seasons
 
-* Season ID
-* Year
+* Season Year
 
 ---
 

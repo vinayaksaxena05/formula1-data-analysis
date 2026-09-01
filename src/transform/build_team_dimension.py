@@ -10,7 +10,7 @@ sys.path.insert(0, str(ROOT_DIR))
 from src.utils.cli import get_year
 
 
-def build_driver_dimension(year=2025):
+def build_team_dimension(year=2025):
 
     print(f"Project root: {ROOT_DIR}")
 
@@ -37,23 +37,15 @@ def build_driver_dimension(year=2025):
 
     print(f"Found {len(races)} races")
 
-    all_drivers = []
+    all_teams = []
 
-    # Driver identity attributes (name, nationality) don't change across a
-    # season, so unlike the old team-carrying version of this dimension,
-    # there's no need to track round order here to find the "most recent"
-    # row -- any race's results row for a driver gives the same identity
-    # attributes. Team is intentionally NOT included: it belongs in
-    # fact_driver_results, since a driver's team is a per-race fact, not a
-    # permanent attribute of the driver (drivers change teams between
-    # seasons, and the old TeamName column here could not represent that).
+    # TeamId is FastF1's stable constructor identifier (e.g. "red_bull"),
+    # which survives sponsor/livery-driven TeamName changes better than
+    # TeamName alone -- it's the natural key this dimension dedupes on.
     required_columns = [
-        "DriverNumber",
-        "Abbreviation",
-        "FirstName",
-        "LastName",
-        "FullName",
-        "CountryCode"
+        "TeamId",
+        "TeamName",
+        "TeamColor"
     ]
 
     for race_folder in races:
@@ -93,30 +85,31 @@ def build_driver_dimension(year=2025):
 
             continue
 
-        drivers = results[
+        teams = results[
             required_columns
         ].copy()
 
-        all_drivers.append(drivers)
+        all_teams.append(teams)
 
-    if len(all_drivers) == 0:
+    if len(all_teams) == 0:
 
         raise ValueError(
-            "No driver data found"
+            "No team data found"
         )
 
-    dim_driver = pd.concat(
-        all_drivers,
+    dim_team = pd.concat(
+        all_teams,
         ignore_index=True
     )
 
-    dim_driver = (
-        dim_driver
+    dim_team = (
+        dim_team
+        .dropna(subset=["TeamId"])
         .drop_duplicates(
-            subset="Abbreviation",
+            subset="TeamId",
             keep="first"
         )
-        .sort_values("DriverNumber")
+        .sort_values("TeamId")
         .reset_index(drop=True)
     )
 
@@ -131,12 +124,13 @@ def build_driver_dimension(year=2025):
         exist_ok=True
     )
 
+    # No year in dimension filename
     output_file = (
         output_folder
-        / f"dim_drivers_{year}.csv"
+        / "dim_teams.csv"
     )
 
-    dim_driver.to_csv(
+    dim_team.to_csv(
         output_file,
         index=False
     )
@@ -144,7 +138,7 @@ def build_driver_dimension(year=2025):
     print("\n--------------------------------")
     print("Dimension complete")
     print(
-        f"Created {len(dim_driver)} drivers"
+        f"Created {len(dim_team)} teams"
     )
     print(
         f"Saved to {output_file}"
@@ -153,4 +147,4 @@ def build_driver_dimension(year=2025):
 
 if __name__ == "__main__":
     year = get_year(default=2025)
-    build_driver_dimension(year=year)
+    build_team_dimension(year=year)
