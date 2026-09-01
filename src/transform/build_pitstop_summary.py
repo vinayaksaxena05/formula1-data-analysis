@@ -1,9 +1,14 @@
+import sys
 from pathlib import Path
 import pandas as pd
 
-year = 2025
-
 ROOT_DIR = Path(__file__).resolve().parents[2]
+
+sys.path.insert(0, str(ROOT_DIR))
+
+from src.utils.cli import get_year
+
+year = get_year(default=2025)
 
 print(f"Project Root: {ROOT_DIR}")
 

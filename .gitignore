@@ -2,3 +2,6 @@ data/raw/
 cache/
 .ipynb_checkpoints/
 __pycache__/
+.env
+*.pyc
+.pipeline/

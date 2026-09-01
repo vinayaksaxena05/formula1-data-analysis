@@ -7,6 +7,8 @@ ROOT_DIR = Path(__file__).resolve().parents[2]
 
 sys.path.insert(0, str(ROOT_DIR))
 
+from src.utils.cli import get_year
+
 from src.utils.schedule import get_round_map
 
 
@@ -201,4 +203,5 @@ def build_championship_standings(year=2025):
 
 
 if __name__ == "__main__":
-    build_championship_standings()
+    year = get_year(default=2025)
+    build_championship_standings(year=year)
