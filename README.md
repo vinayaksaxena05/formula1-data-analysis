@@ -1,525 +1,566 @@
-# Formula 1 Telemetry Analytics Platform
+# Formula 1 Telemetry Data Platform
 
-## Project Overview
+An end-to-end **Formula 1 data engineering and analytics platform** built around FastF1 telemetry and race data.
 
-The Formula 1 Telemetry Analytics Platform is an end-to-end data engineering, analytics, and business intelligence project built using FastF1, Python, SQL, and Power BI.
+The project ingests Formula 1 session data, transforms it into analytical datasets, loads it into a **PostgreSQL data warehouse**, exposes curated SQL views for analytics, validates the warehouse, and feeds the resulting data into Power BI.
 
-The project collects Formula One race and telemetry data through the FastF1 API, processes and transforms the data using ETL pipelines, stores it in a relational database, and presents actionable insights through interactive Power BI dashboards.
-
-The platform aims to answer key questions regarding driver performance, driving styles, race strategy, consistency, and the impact of Formula One regulation changes.
+The goal is not just to build F1 dashboards. It is to demonstrate how a real-world data pipeline can move from raw motorsport data to a structured analytical platform.
 
 ---
 
-# Project Objectives
-
-## Primary Objective
-
-To build a complete Formula One analytics ecosystem capable of ingesting telemetry and race data, transforming it into analytical datasets, and generating meaningful performance insights through interactive dashboards.
-
----
-
-## Technical Objectives
-
-### Data Engineering
-
-* Develop automated data ingestion pipelines using FastF1.
-* Create ETL workflows for data extraction, transformation, and loading.
-* Design and implement a relational database for Formula One analytics.
-* Build analytical data models optimized for business intelligence reporting.
-
-### Analytics
-
-* Analyze race pace and qualifying performance trends.
-* Compare driving styles using telemetry metrics.
-* Investigate braking and cornering behavior.
-* Evaluate consistency and race performance across drivers.
-* Quantify the impact of Formula One regulation changes.
-
-### Business Intelligence
-
-* Develop interactive Power BI dashboards.
-* Create KPI-driven reports for race and driver performance.
-* Enable dynamic filtering by season, circuit, team, and driver.
-
----
-
-# Research Questions
-
-## 1. Regulation Impact Analysis
-
-### Research Question
-
-How have the 2026 Formula One regulations influenced race and qualifying performance compared to the 2025 season?
-
-### Metrics
-
-* Pole Position Lap Time
-* Average Race Pace
-* Qualifying Pace
-* Race Pace Differential
-* Sector Performance
-* Tire Degradation
-
-### Expected Insights
-
-* Performance evolution between seasons
-* Team adaptation effectiveness
-* Changes in race competitiveness
-
----
-
-## 2. Driver Braking Analysis
-
-### Research Question
-
-How do braking characteristics vary among Formula One drivers?
-
-### Metrics
-
-* Braking Distance
-* Braking Duration
-* Deceleration Rate
-* Corner Entry Speed
-* Downshift Locations
-
-### Expected Insights
-
-* Late braking tendencies
-* Aggressive versus conservative approaches
-* Driver adaptation patterns
-
----
-
-## 3. Driving Style Analysis
-
-### Research Question
-
-How do leading Formula One drivers differ in driving style?
-
-### Metrics
-
-* Speed Profiles
-* Throttle Application
-* Brake Usage
-* Gear Selection
-* Corner Entry Speed
-* Corner Exit Speed
-
-### Expected Insights
-
-* Driver-specific driving characteristics
-* Cornering strategies
-* Acceleration and braking patterns
-
----
-
-## 4. Driver Similarity Engine
-
-### Research Question
-
-Which drivers exhibit the most similar performance and driving characteristics?
-
-### Methodology
-
-Driver profiles are generated using telemetry and performance metrics.
-
-Similarity measures include:
-
-* Cosine Similarity
-* Euclidean Distance
-
-### Output
-
-* Driver Similarity Rankings
-* Driver Clusters
-* Style-Based Comparisons
-
-### Applications
-
-* Driver Profiling
-* Talent Identification
-* Performance Benchmarking
-
----
-
-# System Architecture
+## Architecture
 
 ```text
-FastF1 API
-    ↓
-Raw Data Layer
-    ↓
-ETL Pipeline (Python + Pandas)
-    ↓
-SQLite Database
-    ↓
-Analytics Tables
-    ↓
-Power BI Data Model
-    ↓
-Interactive Dashboards
+                         Formula 1 Data
+                              │
+                              ▼
+                         ┌──────────┐
+                         │ FastF1   │
+                         └────┬─────┘
+                              │
+                              ▼
+                    ┌──────────────────┐
+                    │    Extraction    │
+                    │ Python + FastF1  │
+                    └────────┬─────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │  Transformation  │
+                    │ Pandas + NumPy  │
+                    └────────┬─────────┘
+                             │
+                             ▼
+                  ┌──────────────────────┐
+                  │ PostgreSQL Warehouse │
+                  │                      │
+                  │ Dimensions + Facts   │
+                  └──────────┬───────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │ Analytical Views │
+                    │       SQL        │
+                    └────────┬─────────┘
+                             │
+                    ┌────────┴────────┐
+                    ▼                 ▼
+             ┌─────────────┐   ┌──────────────┐
+             │ Data Quality│   │   Power BI   │
+             │ Validation  │   │  Dashboards  │
+             └─────────────┘   └──────────────┘
 ```
 
----
-
-# Technology Stack
-
-## Data Collection
-
-* FastF1
-
-## Programming
-
-* Python
-
-## Data Processing
-
-* Pandas
-* NumPy
-
-## Database
-
-* SQLite
-
-## Visualization & BI
-
-* Power BI
-
-## Data Visualization
-
-* Matplotlib
-* Plotly
-
-## Development Tools
-
-* Git
-* GitHub
-* Jupyter Notebook
+The pipeline is orchestrated through `run_pipeline.py`, with lightweight pipeline-state caching to avoid unnecessarily re-running completed stages.
 
 ---
 
-# Data Sources
+## Why this project?
 
-The project utilizes official Formula One timing and telemetry data accessible through FastF1.
+Formula 1 produces an unusually rich combination of structured race data and high-frequency telemetry. That makes it a useful environment for exploring data engineering concepts at multiple levels of granularity.
 
-## Session Data
+The platform brings together:
 
-* Race Sessions
-* Qualifying Sessions
-* Sprint Sessions
-* Practice Sessions
-
-## Lap Data
-
-* Lap Times
-* Sector Times
-* Tire Compounds
-* Stints
-* Position Data
-
-## Telemetry Data
-
-* Speed
-* Gear Selection
-* Throttle Application
-* Brake Usage
-* RPM
-* DRS Usage
-* Distance
-* Time
-
-## Environmental Data
-
-* Air Temperature
-* Track Temperature
-* Humidity
-* Wind Conditions
+- API-based data extraction
+- ETL and feature engineering
+- Relational data warehousing
+- Dimensional modeling
+- Race- and driver-level analytical facts
+- SQL-based semantic views
+- Data quality validation
+- Pipeline orchestration and caching
+- Motorsport analytics and machine learning
+- Business intelligence through Power BI
 
 ---
 
-# ETL Pipeline
+## Technology Stack
 
-## Extract
+| Layer | Technology |
+|---|---|
+| Data source | FastF1 |
+| Language | Python |
+| Data processing | Pandas, NumPy |
+| Machine learning | scikit-learn |
+| Data warehouse | PostgreSQL |
+| Database access | psycopg2 |
+| Configuration | python-dotenv |
+| Analytics layer | PostgreSQL SQL views |
+| BI | Power BI |
+| Development | Git, GitHub, Jupyter |
 
-Data is retrieved from FastF1 APIs for selected seasons, circuits, drivers, and sessions.
-
-### Extracted Data
-
-* Session Results
-* Lap Information
-* Telemetry Streams
-* Weather Data
-
----
-
-## Transform
-
-Data processing includes:
-
-### Data Cleaning
-
-* Missing value handling
-* Datetime conversion
-* Data validation
-
-### Feature Engineering
-
-Creation of analytical metrics such as:
-
-* Average Race Pace
-* Qualifying Pace
-* Consistency Index
-* Braking Distance
-* Corner Entry Speed
-* Corner Exit Speed
-* Tire Degradation Rate
-* Driver Performance Scores
+Dependencies are maintained in [`requirements.txt`](requirements.txt).
 
 ---
 
-## Load
+# Data Pipeline
 
-Processed datasets are stored in SQLite and transformed into analytical tables optimized for Power BI reporting.
+The pipeline is executed from the repository root using `run_pipeline.py`.
+
+```text
+1. Extract
+      ↓
+2. Transform
+      ↓
+3. Create / Load Dimensions
+      ↓
+4. Create / Load Facts
+      ↓
+5. Create Analytical Views
+      ↓
+6. Validate Data Quality
+```
+
+### 1. Extraction
+
+FastF1 is used to retrieve Formula 1 race and telemetry data for the selected season.
+
+Current extraction components include:
+
+- Race/session data
+- Driver telemetry
+- Lap and session information
+- Race results and related metadata
+
+FastF1's own caching mechanism is used to reduce repeated upstream downloads.
+
+### 2. Transformation
+
+Raw extracted data is converted into analytical datasets using Python and Pandas.
+
+Transformations currently cover:
+
+- Season dimension
+- Team dimension
+- Driver dimension
+- Race dimension
+- Championship standings
+- Driver braking metrics
+- Driver pace metrics
+- Driver race telemetry metrics
+- Driver stints
+- Pit stop summaries
+- Tire degradation analysis
+
+Additional analytical transformations support driver feature engineering, similarity analysis, and clustering.
+
+### 3. Warehouse Loading
+
+The transformed datasets are loaded into PostgreSQL using a dimensional warehouse design.
+
+The warehouse separates relatively stable descriptive entities into dimensions and measurable analytical events into fact tables.
+
+### 4. Analytical Views
+
+PostgreSQL views provide a cleaner analytical layer for downstream reporting.
+
+Current views include:
+
+- `vw_championship`
+- `vw_driver_race_performance`
+- `vw_driver_style`
+- `vw_driver_telemetry`
+- `vw_pitstops`
+- `vw_tire_degradation`
+
+### 5. Data Quality Validation
+
+The pipeline includes automated validation after view creation.
+
+Validation checks include:
+
+- Dimension and fact table population
+- Analytical view population
+- Required warehouse keys
+- Foreign-key integrity checks
+- Season presence
+- Expected race coverage
+- Duplicate race/driver grains
+- Basic pipeline completeness
 
 ---
 
-# Database Design
+# Pipeline Usage
+
+Run the pipeline from the project root:
+
+```bash
+python run_pipeline.py
+```
+
+If no year is supplied, the pipeline prompts for the season and defaults to `2025`.
+
+The resolved year is passed explicitly to each child pipeline stage so the individual scripts operate on the same season.
+
+To run a specific season without the interactive prompt:
+
+```bash
+python run_pipeline.py 2025
+```
+
+To force every pipeline stage to run regardless of cached state:
+
+```bash
+python run_pipeline.py 2025 --force
+```
+
+The pipeline records completed stages in:
+
+```text
+.pipeline/state.json
+```
+
+This is separate from FastF1's cache. FastF1 caching prevents unnecessary upstream downloads, while the project pipeline cache prevents unnecessary re-execution of completed ETL stages.
+
+> **Note:** Pipeline caching is intentionally lightweight. Dependency-aware invalidation and more advanced lineage/fingerprint handling are planned improvements.
+
+---
+
+# Data Warehouse
+
+The PostgreSQL warehouse follows a dimensional modeling approach.
 
 ## Dimension Tables
 
-### dim_drivers
+### `dim_seasons`
 
-* Driver Number
-* Abbreviation
-* First Name / Last Name / Full Name
-* Country Code
+Stores season-level identifiers.
 
-Team is intentionally not stored here: drivers change teams between (and
-occasionally within) seasons, so team is a per-race fact, not a permanent
-driver attribute.
+- `season_key`
+- `season`
 
-### dim_teams
+### `dim_teams`
 
-* Team ID (constructor identifier)
-* Team Name
-* Team Color
+Stores constructor/team information.
 
-### dim_races
+- Team identifier
+- Team name
+- Team attributes used by the analytical model
 
-* Round Number
-* Race
-* Country / Location
-* Official Event Name
-* Event Date
-* Event Format / Sprint Weekend
+### `dim_drivers`
 
-### dim_seasons
+Stores driver-level descriptive attributes.
 
-* Season Year
+Team membership is not treated as a permanent driver attribute because drivers can change teams across seasons.
+
+### `dim_races`
+
+Stores race/event-level descriptive information including season and round context.
 
 ---
 
 ## Fact Tables
 
-### fact_laps
+### `fact_championship_standings`
 
-* Lap Time
-* Sector Times
-* Tire Compound
-* Stint Information
+Season championship standings and points-related metrics.
 
-### fact_telemetry
+### `fact_driver_race_metrics`
 
-* Speed
-* Gear
-* Throttle
-* Brake
-* RPM
-* DRS
-* Distance
+Race-level driver performance and pace metrics.
 
-### fact_driver_metrics
+### `fact_driver_race_telemetry_metrics`
 
-* Average Pace
-* Consistency
-* Entry Speed
-* Exit Speed
-* Braking Metrics
+Race-level telemetry-derived driver metrics.
 
----
+### `fact_driver_stints`
 
-# Power BI Dashboard
+Driver stint and tire information across races.
 
-## Dashboard 1: Executive Overview
+### `fact_pitstops`
 
-Purpose:
+Pit stop information and derived pit stop metrics.
 
-Provide a high-level overview of season and race performance.
+### `fact_tire_degradation`
 
-### KPIs
+Tire degradation metrics derived from stint and lap data.
 
-* Total Drivers
-* Total Races
-* Fastest Driver
-* Most Consistent Driver
-* Average Race Pace
+### `fact_braking_metrics`
 
-### Visualizations
+Driver braking characteristics derived from telemetry.
 
-* Driver Standings
-* Team Standings
-* Fastest Lap Rankings
+### `fact_driver_style_metrics`
+
+Driver-level driving style metrics used for comparative analysis.
 
 ---
 
-## Dashboard 2: Driver Performance Analysis
+# Analytical Layer
 
-Purpose:
+The platform currently supports several categories of analysis.
 
-Analyze race pace and consistency.
+## Championship Analysis
 
-### Visualizations
+Analyze season standings and race-by-race championship progression.
 
-* Lap Time Boxplots
-* Pace Distributions
-* Consistency Metrics
-* Driver Rankings
+## Race Performance
 
-### Filters
+Compare drivers across races using pace and performance metrics.
 
-* Driver
-* Team
-* Season
-* Circuit
+## Telemetry Analysis
 
----
+Explore telemetry-derived characteristics including:
 
-## Dashboard 3: Telemetry Analysis
+- Speed
+- Throttle
+- Brake usage
+- Gear
+- RPM
+- DRS
+- Distance
 
-Purpose:
+## Braking Analysis
 
-Compare telemetry characteristics between drivers.
+Analyze driver braking behavior using telemetry-derived metrics such as braking distance, braking duration, deceleration, and related corner-entry characteristics.
 
-### Visualizations
+## Driving Style Analysis
 
-* Speed vs Distance
-* Gear vs Distance
-* Brake vs Distance
-* Throttle vs Distance
+Build driver profiles from telemetry and performance features to compare how drivers approach acceleration, braking, and cornering.
 
-### Use Cases
+## Tire Degradation
 
-* Driver Comparisons
-* Corner Analysis
-* Driving Style Evaluation
+Analyze degradation patterns across driver stints and tire compounds.
 
----
+## Pit Stop Analysis
 
-## Dashboard 4: Driving Style Analysis
-
-Purpose:
-
-Investigate driver-specific performance characteristics.
-
-### Metrics
-
-* Braking Aggressiveness
-* Throttle Application
-* Corner Entry Speed
-* Corner Exit Speed
-
-### Visualizations
-
-* Radar Charts
-* Comparative Metrics
-* Driver Profiles
+Compare pit stop performance and race-level pit stop behavior.
 
 ---
 
-## Dashboard 5: Regulation Impact Analysis
+# Machine Learning & Driver Analytics
 
-Purpose:
+The project also contains a small machine learning / analytical layer built on top of the engineered driver features.
 
-Compare performance between the 2025 and 2026 Formula One seasons.
+### Driver Feature Matrix
 
-### Visualizations
+Driver-level features combine multiple aspects of performance and telemetry-derived behavior.
 
-* Qualifying Pace Comparison
-* Race Pace Comparison
-* Sector Analysis
-* Team Adaptation Metrics
+### Driver Similarity
 
----
+Driver profiles can be standardized and compared using similarity metrics such as cosine similarity.
 
-## Dashboard 6: Driver Similarity Engine
+### Driver Clustering
 
-Purpose:
+K-Means clustering is used to group drivers based on engineered performance and telemetry characteristics.
 
-Identify drivers with similar performance characteristics.
-
-### Visualizations
-
-* Similarity Rankings
-* Driver Comparison Tables
-* Cluster Analysis
+This layer is intentionally separated from the core warehouse pipeline so that machine learning experiments can evolve without coupling them to the ingestion and storage architecture.
 
 ---
 
-# Key Analytical Outputs
+# Power BI
 
-The platform generates insights related to:
+Power BI sits downstream of the PostgreSQL analytical layer.
 
-* Driver Consistency
-* Race Pace Analysis
-* Qualifying Performance
-* Driving Style Characteristics
-* Braking Strategies
-* Tire Management
-* Regulation Impact Assessment
-* Driver Similarity Profiling
+The reporting layer is designed around curated SQL views rather than directly exposing every raw warehouse table.
 
----
+Current analytical areas include:
 
-# Skills Demonstrated
+- Championship standings
+- Driver race performance
+- Driver telemetry
+- Driving style
+- Pit stops
+- Tire degradation
 
-## Data Engineering
-
-* API Integration
-* ETL Development
-* Data Warehousing Concepts
-* Relational Database Design
-
-## Analytics
-
-* Exploratory Data Analysis
-* Statistical Analysis
-* Performance Metrics
-* Feature Engineering
-
-## Business Intelligence
-
-* Data Modeling
-* Dashboard Design
-* KPI Development
-* Interactive Reporting
-
-## Motorsport Analytics
-
-* Telemetry Analysis
-* Driver Performance Evaluation
-* Driving Style Profiling
-* Race Strategy Analysis
+This keeps the BI layer focused on analysis while the warehouse remains responsible for structured storage and transformation.
 
 ---
 
-# Future Enhancements
+# Project Structure
 
-* Machine Learning Driver Clustering
-* Predictive Race Pace Models
-* Tire Strategy Optimization
-* Historical Driver Comparison Engine
-* Automated Insight Generation
-* Cloud-Based Data Warehouse Integration
+```text
+formula1-data-analysis/
+│
+├── data/
+│   └── processed/
+│
+├── notebooks/
+│
+├── src/
+│   ├── extract/
+│   │   ├── driver_telemetry.py
+│   │   └── race_data.py
+│   │
+│   ├── transform/
+│   │   ├── build_season_dimension.py
+│   │   ├── build_team_dimension.py
+│   │   ├── build_driver_dimension.py
+│   │   ├── build_race_dimension.py
+│   │   ├── build_championship_standings.py
+│   │   ├── build_driver_braking_metrics.py
+│   │   ├── build_driver_pace_metrics.py
+│   │   ├── build_driver_race_telemetry_metrics.py
+│   │   ├── build_driver_stints.py
+│   │   ├── build_pitstop_summary.py
+│   │   ├── build_tire_degradation_analysis.py
+│   │   ├── build_driver_feature_matrix.py
+│   │   ├── build_driver_similarity_engine.py
+│   │   └── build_driver_cluster.py
+│   │
+│   ├── load/
+│   │   ├── connection.py
+│   │   ├── create_dimensions.py
+│   │   ├── load_dimensions.py
+│   │   ├── create_facts.py
+│   │   ├── load_facts.py
+│   │   ├── create_views.py
+│   │   └── validate_pipeline.py
+│   │
+│   ├── visualization/
+│   │   └── *.sql
+│   │
+│   └── utils/
+│       ├── cli.py
+│       ├── pipeline_cache.py
+│       └── schedule.py
+│
+├── .pipeline/
+├── .env
+├── requirements.txt
+├── run_pipeline.py
+├── CHANGELOG.md
+└── README.md
+```
+
+> `.env`, `.pipeline/`, Python cache files, and other local/generated artifacts should remain excluded from version control.
+
+---
+
+# Configuration
+
+PostgreSQL connection details are loaded from environment variables using `python-dotenv`.
+
+Create a local `.env` file containing the database configuration expected by `src/load/connection.py`.
+
+Example structure:
+
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=your_database
+DB_USER=your_user
+DB_PASSWORD=your_password
+```
+
+Do **not** commit real credentials to GitHub.
+
+---
+
+# Data Model at a Glance
+
+```text
+                  ┌──────────────┐
+                  │  dim_seasons │
+                  └──────┬───────┘
+                         │
+              ┌──────────┼──────────┐
+              ▼          ▼          ▼
+       ┌───────────┐ ┌─────────┐ ┌───────────┐
+       │ dim_races │ │dim_drivers││ dim_teams │
+       └─────┬─────┘ └────┬────┘ └─────┬─────┘
+             │             │            │
+             └─────────────┼────────────┘
+                           ▼
+                 ┌──────────────────┐
+                 │   Fact Tables    │
+                 │                  │
+                 │ Race Metrics     │
+                 │ Telemetry        │
+                 │ Stints           │
+                 │ Pit Stops        │
+                 │ Tire Degradation │
+                 │ Braking          │
+                 │ Style Metrics    │
+                 │ Championship     │
+                 └────────┬─────────┘
+                          │
+                          ▼
+                 ┌──────────────────┐
+                 │ Analytical Views │
+                 └──────────────────┘
+```
+
+---
+
+# Current Status
+
+| Component | Status |
+|---|---|
+| FastF1 extraction | ✅ Complete |
+| Python transformations | ✅ Complete |
+| PostgreSQL warehouse | ✅ Complete |
+| Dimension tables | ✅ Complete |
+| Fact tables | ✅ Complete |
+| Analytical SQL views | ✅ Complete |
+| Data quality validation | ✅ Complete |
+| Pipeline orchestration | ✅ Complete |
+| Basic pipeline caching | ✅ Complete |
+| Driver similarity analysis | ✅ Complete |
+| Driver clustering | ✅ Complete |
+| Power BI analytical layer | ✅ Complete |
+| Dependency-aware cache invalidation | 🚧 Planned |
+| Automated unit/integration tests | 🚧 Planned |
+| Apache Airflow orchestration | 🚧 Planned |
+| CI/CD | 🚧 Planned |
+| Cloud deployment | 🔭 Future |
+
+---
+
+# Roadmap
+
+The next engineering improvements are focused on making the platform more production-like rather than simply adding more dashboards.
+
+### 1. Dependency-aware pipeline caching
+
+Move beyond independent stage flags and invalidate downstream stages when their inputs or transformation logic changes.
+
+### 2. Automated testing
+
+Add unit and integration tests for transformations, warehouse loading, analytical grains, and data quality checks.
+
+### 3. Apache Airflow
+
+Move orchestration from the local Python runner into an explicit DAG-based workflow with task dependencies, retries, scheduling, and observability.
+
+### 4. CI/CD
+
+Run automated tests and validation through GitHub Actions before changes are merged.
+
+### 5. Cloud deployment
+
+Evaluate moving the warehouse and orchestration stack to cloud infrastructure once the local pipeline is stable.
+
+---
+
+# What this project demonstrates
+
+### Data Engineering
+
+- API-based data ingestion
+- ETL pipeline development
+- Dimensional data modeling
+- PostgreSQL data warehousing
+- Analytical SQL
+- Pipeline orchestration
+- Data quality validation
+- Pipeline caching
+
+### Analytics
+
+- Feature engineering
+- Telemetry analysis
+- Driver performance analysis
+- Tire degradation analysis
+- Braking analysis
+- Similarity analysis
+- Machine learning clustering
+
+### Business Intelligence
+
+- Analytical data modeling
+- SQL semantic views
+- Power BI reporting
+- KPI and comparative analysis
 
 ---
 
@@ -527,6 +568,14 @@ The platform generates insights related to:
 
 **Vinayak Saxena**
 
-B.Tech Student | Data Analytics Enthusiast | Formula One Analytics Project
+Computer Science Undergraduate | Data Engineering & Analytics
 
-This project was developed to explore the intersection of data engineering, business intelligence, analytics, and motorsport performance analysis using real-world Formula One telemetry data.
+This project explores the intersection of **data engineering, analytics, machine learning, and motorsport telemetry** using real-world Formula 1 data.
+
+---
+
+## Data Source
+
+This project uses the [FastF1](https://github.com/theOehrly/Fast-F1) Python library to access Formula 1 timing, telemetry, session, and related motorsport data.
+
+Formula 1 data is used for educational, analytical, and portfolio purposes.
