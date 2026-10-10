@@ -8,6 +8,7 @@ ROOT_DIR = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT_DIR))
 
 from src.utils.cli import get_year
+from src.utils.dimensions import merge_dimension
 
 
 def build_driver_dimension(year=2025):
@@ -131,9 +132,25 @@ def build_driver_dimension(year=2025):
         exist_ok=True
     )
 
+    # No year in the filename: the driver dimension is cumulative across
+    # seasons and keyed on Abbreviation. Team is deliberately excluded
+    # (see note above), so the only per-season drift here is DriverNumber,
+    # which takes the latest season's value.
     output_file = (
         output_folder
-        / f"dim_drivers_{year}.csv"
+        / "dim_drivers.csv"
+    )
+
+    dim_driver = merge_dimension(
+        dim_driver,
+        output_file,
+        key="Abbreviation"
+    )
+
+    dim_driver = (
+        dim_driver
+        .sort_values("DriverNumber")
+        .reset_index(drop=True)
     )
 
     dim_driver.to_csv(

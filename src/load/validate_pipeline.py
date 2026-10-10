@@ -6,40 +6,45 @@ sys.stdout.reconfigure(encoding="utf-8")
 ROOT_DIR = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT_DIR))
 
+from psycopg2 import sql
+
 from src.load.connection import get_connection
+from src.load.schema import DIMENSION_TABLES, FACT_TABLES, VIEWS
+from src.utils.cli import get_year
 
 
-DIMENSION_TABLES = [
-    "dim_seasons",
-    "dim_teams",
-    "dim_drivers",
-    "dim_races",
-]
-
-FACT_TABLES = [
-    "fact_braking_metrics",
-    "fact_championship_standings",
+# Facts that share the 1-driver-x-1-race grain (used for the grain check
+# and its matching views).
+DRIVER_RACE_GRAIN_OBJECTS = [
     "fact_driver_race_metrics",
     "fact_driver_race_telemetry_metrics",
-    "fact_driver_stints",
     "fact_driver_style_metrics",
-    "fact_pitstops",
-    "fact_tire_degradation",
+    "vw_driver_race_performance",
+    "vw_driver_telemetry",
+    "vw_driver_style",
 ]
 
-VIEWS = [
-    "vw_championship",
-    "vw_driver_race_performance",
-    "vw_driver_style",
-    "vw_driver_telemetry",
-    "vw_pitstops",
-    "vw_tire_degradation",
+FOREIGN_KEY_CHECKS = [
+    ("fact_driver_race_metrics", "driver_key", "dim_drivers", "driver_key"),
+    ("fact_driver_race_metrics", "race_key", "dim_races", "race_key"),
+    ("fact_driver_race_metrics", "season_key", "dim_seasons", "season_key"),
+    ("fact_championship_standings", "driver_key", "dim_drivers", "driver_key"),
+    ("fact_championship_standings", "race_key", "dim_races", "race_key"),
+    ("fact_championship_standings", "season_key", "dim_seasons", "season_key"),
 ]
+
+
+def _count(cursor, query, params=None):
+    cursor.execute(query, params or ())
+    return cursor.fetchone()[0]
 
 
 def check_table_has_rows(cursor, table):
-    cursor.execute(f"SELECT COUNT(*) FROM {table}")
-    count = cursor.fetchone()[0]
+
+    count = _count(
+        cursor,
+        sql.SQL("SELECT COUNT(*) FROM {}").format(sql.Identifier(table)),
+    )
 
     if count == 0:
         raise ValueError(f"{table} is empty")
@@ -47,28 +52,17 @@ def check_table_has_rows(cursor, table):
     print(f"✓ {table}: {count:,} rows")
 
 
-def check_view_has_rows(cursor, view):
-    cursor.execute(f"SELECT COUNT(*) FROM {view}")
-    count = cursor.fetchone()[0]
-
-    if count == 0:
-        raise ValueError(f"{view} is empty")
-
-    print(f"✓ {view}: {count:,} rows")
-
-
 def check_null_keys(cursor, table, columns):
+
     for column in columns:
 
-        cursor.execute(
-            f"""
-            SELECT COUNT(*)
-            FROM {table}
-            WHERE {column} IS NULL
-            """
+        count = _count(
+            cursor,
+            sql.SQL("SELECT COUNT(*) FROM {} WHERE {} IS NULL").format(
+                sql.Identifier(table),
+                sql.Identifier(column),
+            ),
         )
-
-        count = cursor.fetchone()[0]
 
         if count > 0:
             raise ValueError(
@@ -79,149 +73,144 @@ def check_null_keys(cursor, table, columns):
 
 
 def check_foreign_keys(cursor):
-    checks = [
-        (
-            "fact_driver_race_metrics",
-            "driver_key",
-            "dim_drivers",
-            "driver_key",
-        ),
-        (
-            "fact_driver_race_metrics",
-            "race_key",
-            "dim_races",
-            "race_key",
-        ),
-        (
-            "fact_driver_race_metrics",
-            "season_key",
-            "dim_seasons",
-            "season_key",
-        ),
-        (
-            "fact_championship_standings",
-            "driver_key",
-            "dim_drivers",
-            "driver_key",
-        ),
-        (
-            "fact_championship_standings",
-            "race_key",
-            "dim_races",
-            "race_key",
-        ),
-        (
-            "fact_championship_standings",
-            "season_key",
-            "dim_seasons",
-            "season_key",
-        ),
-    ]
 
-    for fact, fact_key, dimension, dimension_key in checks:
+    for fact, fact_key, dimension, dimension_key in FOREIGN_KEY_CHECKS:
 
-        query = f"""
+        query = sql.SQL(
+            """
             SELECT COUNT(*)
             FROM {fact} f
             LEFT JOIN {dimension} d
                 ON f.{fact_key} = d.{dimension_key}
             WHERE f.{fact_key} IS NOT NULL
               AND d.{dimension_key} IS NULL
-        """
+            """
+        ).format(
+            fact=sql.Identifier(fact),
+            dimension=sql.Identifier(dimension),
+            fact_key=sql.Identifier(fact_key),
+            dimension_key=sql.Identifier(dimension_key),
+        )
 
-        cursor.execute(query)
-
-        count = cursor.fetchone()[0]
+        count = _count(cursor, query)
 
         if count > 0:
             raise ValueError(
                 f"{fact}.{fact_key} has {count:,} orphaned keys"
             )
 
-        print(
-            f"✓ {fact}.{fact_key} → "
-            f"{dimension}.{dimension_key}"
-        )
+        print(f"✓ {fact}.{fact_key} → {dimension}.{dimension_key}")
 
 
-def check_expected_season(cursor):
-    cursor.execute(
-        """
-        SELECT COUNT(*)
-        FROM dim_seasons
-        WHERE season = 2025
-        """
+def check_expected_season(cursor, year):
+
+    count = _count(
+        cursor,
+        "SELECT COUNT(*) FROM dim_seasons WHERE season = %s",
+        (year,),
     )
-
-    count = cursor.fetchone()[0]
 
     if count != 1:
         raise ValueError(
-            f"Expected exactly one 2025 season, found {count}"
+            f"Expected exactly one {year} season row, found {count}"
         )
 
-    print("✓ 2025 season exists")
+    print(f"✓ {year} season exists")
 
 
-def check_race_coverage(cursor):
-    cursor.execute(
+def check_race_coverage(cursor, year):
+
+    race_count = _count(
+        cursor,
         """
         SELECT COUNT(*)
-        FROM dim_races
-        """
+        FROM dim_races r
+        JOIN dim_seasons s ON r.season_key = s.season_key
+        WHERE s.season = %s
+        """,
+        (year,),
     )
 
-    race_count = cursor.fetchone()[0]
+    if race_count == 0:
+        raise ValueError(f"No races found in dim_races for season {year}")
 
-    if race_count != 24:
+    duplicate_rounds = _count(
+        cursor,
+        """
+        SELECT COUNT(*) FROM (
+            SELECT r.round_number
+            FROM dim_races r
+            JOIN dim_seasons s ON r.season_key = s.season_key
+            WHERE s.season = %s
+            GROUP BY r.round_number
+            HAVING COUNT(*) > 1
+        ) d
+        """,
+        (year,),
+    )
+
+    if duplicate_rounds > 0:
         raise ValueError(
-            f"Expected 24 races, found {race_count}"
+            f"season {year} has {duplicate_rounds} duplicate round_number(s) "
+            f"in dim_races"
         )
 
-    print("✓ Race coverage: 24 races")
+    print(f"✓ {year}: {race_count} races, no duplicate rounds")
+
+
+def check_season_has_facts(cursor, year):
+
+    for table in FACT_TABLES:
+
+        count = _count(
+            cursor,
+            sql.SQL(
+                """
+                SELECT COUNT(*)
+                FROM {} f
+                JOIN dim_seasons s ON f.season_key = s.season_key
+                WHERE s.season = %s
+                """
+            ).format(sql.Identifier(table)),
+            (year,),
+        )
+
+        if count == 0:
+            raise ValueError(f"{table} has no rows for season {year}")
+
+        print(f"✓ {table}: {count:,} rows for {year}")
 
 
 def check_driver_race_grain(cursor):
-    checks = [
-        "fact_driver_race_metrics",
-        "fact_driver_race_telemetry_metrics",
-        "fact_driver_style_metrics",
-        "vw_driver_race_performance",
-        "vw_driver_telemetry",
-        "vw_driver_style",
-    ]
 
-    for table in checks:
+    for obj in DRIVER_RACE_GRAIN_OBJECTS:
 
-        cursor.execute(
-            f"""
-            SELECT COUNT(*)
-            FROM (
-                SELECT race_key, driver_key
-                FROM {table}
-                GROUP BY race_key, driver_key
-                HAVING COUNT(*) > 1
-            ) duplicates
-            """
+        duplicate_count = _count(
+            cursor,
+            sql.SQL(
+                """
+                SELECT COUNT(*) FROM (
+                    SELECT race_key, driver_key
+                    FROM {}
+                    GROUP BY race_key, driver_key
+                    HAVING COUNT(*) > 1
+                ) duplicates
+                """
+            ).format(sql.Identifier(obj)),
         )
-
-        duplicate_count = cursor.fetchone()[0]
 
         if duplicate_count > 0:
             raise ValueError(
-                f"{table} contains "
-                f"{duplicate_count:,} duplicate race/driver groups"
+                f"{obj} contains {duplicate_count:,} duplicate race/driver groups"
             )
 
-        print(
-            f"✓ {table}: unique race/driver grain"
-        )
+        print(f"✓ {obj}: unique race/driver grain")
 
 
-def validate_pipeline():
+def validate_pipeline(year):
 
     print("=" * 60)
-    print("FORMULA 1 DATA QUALITY VALIDATION")
+    print(f"FORMULA 1 DATA QUALITY VALIDATION — season {year}")
     print("=" * 60)
 
     conn = None
@@ -231,89 +220,48 @@ def validate_pipeline():
         conn = get_connection()
         cursor = conn.cursor()
 
-        # --------------------------------------------------
-        # DIMENSIONS
-        # --------------------------------------------------
-
         print("\nDIMENSION TABLES")
         print("-" * 60)
-
         for table in DIMENSION_TABLES:
             check_table_has_rows(cursor, table)
 
-        # --------------------------------------------------
-        # FACTS
-        # --------------------------------------------------
-
         print("\nFACT TABLES")
         print("-" * 60)
-
         for table in FACT_TABLES:
             check_table_has_rows(cursor, table)
 
-        # --------------------------------------------------
-        # VIEWS
-        # --------------------------------------------------
-
         print("\nVISUALIZATION VIEWS")
         print("-" * 60)
-
         for view in VIEWS:
-            check_view_has_rows(cursor, view)
-
-        # --------------------------------------------------
-        # NULL KEYS
-        # --------------------------------------------------
+            check_table_has_rows(cursor, view)
 
         print("\nKEY VALIDATION")
         print("-" * 60)
-
         for table in FACT_TABLES:
-
             check_null_keys(
                 cursor,
                 table,
-                [
-                    "season_key",
-                    "race_key",
-                    "driver_key",
-                ],
+                ["season_key", "race_key", "driver_key"],
             )
-
-        # --------------------------------------------------
-        # FOREIGN KEYS
-        # --------------------------------------------------
 
         print("\nFOREIGN KEY VALIDATION")
         print("-" * 60)
-
         check_foreign_keys(cursor)
-
-        # --------------------------------------------------
-        # SEASON
-        # --------------------------------------------------
 
         print("\nSEASON VALIDATION")
         print("-" * 60)
-
-        check_expected_season(cursor)
-
-        # --------------------------------------------------
-        # RACES
-        # --------------------------------------------------
+        check_expected_season(cursor, year)
 
         print("\nRACE VALIDATION")
         print("-" * 60)
+        check_race_coverage(cursor, year)
 
-        check_race_coverage(cursor)
-
-        # --------------------------------------------------
-        # GRAIN
-        # --------------------------------------------------
+        print("\nLOADED-SEASON FACT COVERAGE")
+        print("-" * 60)
+        check_season_has_facts(cursor, year)
 
         print("\nGRAIN VALIDATION")
         print("-" * 60)
-
         check_driver_race_grain(cursor)
 
         cursor.close()
@@ -341,4 +289,4 @@ def validate_pipeline():
 
 
 if __name__ == "__main__":
-    validate_pipeline()
+    validate_pipeline(get_year(default=2025))

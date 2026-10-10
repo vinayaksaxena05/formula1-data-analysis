@@ -1,7 +1,6 @@
 import sys
-import pandas as pd
 from pathlib import Path
-import psycopg2
+
 from psycopg2.extras import execute_values
 
 
@@ -15,41 +14,23 @@ sys.path.insert(0, str(ROOT_DIR))
 
 
 # ============================================================
-# DATABASE CONNECTION
+# DATABASE CONNECTION / SHARED HELPERS
 # ============================================================
 
-from connection import get_connection
+from src.load.connection import get_connection
+from src.load.io import get_csv, to_native
 from src.utils.cli import get_year
 
 
 # ============================================================
-# PATHS
+# TARGET SEASON
+#
+# Set from argv[1] in __main__ (matching load_facts.py) so the
+# orchestrator's per-year invocation is honoured. The module-level
+# default keeps the loaders importable/testable.
 # ============================================================
-
-PROCESSED_FOLDER = (
-    ROOT_DIR
-    / "data"
-    / "processed"
-)
 
 YEAR = 2025
-
-
-# ============================================================
-# CSV HELPER
-# ============================================================
-
-def get_csv(filename):
-
-    file = PROCESSED_FOLDER / filename
-
-    if not file.exists():
-
-        raise FileNotFoundError(
-            f"\nRequired file not found:\n{file}"
-        )
-
-    return pd.read_csv(file)
 
 
 # ============================================================
@@ -106,8 +87,6 @@ def load_seasons(conn):
             rows
         )
 
-    conn.commit()
-
     print("dim_seasons loaded")
 
 
@@ -137,7 +116,7 @@ def load_teams(conn):
 
     rows = [
         (
-            row["TeamName"],
+            to_native(row["TeamName"]),
         )
         for _, row in df.iterrows()
     ]
@@ -159,8 +138,6 @@ def load_teams(conn):
             rows
         )
 
-    conn.commit()
-
     print("dim_teams loaded")
 
 
@@ -170,7 +147,7 @@ def load_teams(conn):
 
 def load_drivers(conn):
 
-    file = f"dim_drivers_{YEAR}.csv"
+    file = "dim_drivers.csv"
 
     df = get_csv(file)
 
@@ -203,12 +180,12 @@ def load_drivers(conn):
 
     rows = [
         (
-            row["DriverNumber"],
-            row["Abbreviation"],
-            row["FirstName"],
-            row["LastName"],
-            row["FullName"],
-            row["CountryCode"]
+            to_native(row["DriverNumber"]),
+            to_native(row["Abbreviation"]),
+            to_native(row["FirstName"]),
+            to_native(row["LastName"]),
+            to_native(row["FullName"]),
+            to_native(row["CountryCode"]),
         )
         for _, row in df.iterrows()
     ]
@@ -235,14 +212,36 @@ def load_drivers(conn):
             rows
         )
 
-    conn.commit()
-
     print("dim_drivers loaded")
 
 
 # ============================================================
 # RACES
 # ============================================================
+
+def get_season_key(conn, year):
+    """Resolve a season year to its dim_seasons surrogate key.
+
+    load_seasons must have run first (it does, in main()).
+    """
+
+    with conn.cursor() as cursor:
+
+        cursor.execute(
+            "SELECT season_key FROM dim_seasons WHERE season = %s",
+            (year,),
+        )
+
+        row = cursor.fetchone()
+
+    if row is None:
+
+        raise ValueError(
+            f"Season {year} not in dim_seasons -- load_seasons must run first."
+        )
+
+    return row[0]
+
 
 def load_races(conn):
 
@@ -279,36 +278,22 @@ def load_races(conn):
         subset=["Race"]
     )
 
-    # dim_races belongs to exactly one season (dim_seasons -> dim_races),
-    # so season_key must be resolved and included here -- without it,
-    # races are inserted with no link back to dim_seasons at all.
-    with conn.cursor() as cursor:
-
-        cursor.execute(
-            "SELECT season_key FROM dim_seasons WHERE season = %s",
-            (YEAR,)
-        )
-
-        result = cursor.fetchone()
-
-    if result is None:
-        raise ValueError(
-            f"{YEAR} was not found in dim_seasons. Run load_seasons() first."
-        )
-
-    season_key = result[0]
+    # A race token repeats every season, so dim_races is keyed on
+    # (season_key, race). The CSV has no season column, so stamp it
+    # from the target year -- the same thing load_facts.py does.
+    season_key = get_season_key(conn, YEAR)
 
     rows = [
         (
             season_key,
             int(row["RoundNumber"]),
-            row["Country"],
-            row["Location"],
-            row["OfficialEventName"],
-            row["EventDate"],
-            row["EventFormat"],
-            row["SprintWeekend"],
-            row["Race"]
+            to_native(row["Country"]),
+            to_native(row["Location"]),
+            to_native(row["OfficialEventName"]),
+            to_native(row["EventDate"]),
+            to_native(row["EventFormat"]),
+            to_native(row["SprintWeekend"]),
+            to_native(row["Race"]),
         )
         for _, row in df.iterrows()
     ]
@@ -326,7 +311,7 @@ def load_races(conn):
             race
         )
         VALUES %s
-        ON CONFLICT (season_key, round_number)
+        ON CONFLICT (season_key, race)
         DO NOTHING
     """
 
@@ -337,8 +322,6 @@ def load_races(conn):
             query,
             rows
         )
-
-    conn.commit()
 
     print("dim_races loaded")
 
@@ -361,6 +344,8 @@ def main():
 
         print("PostgreSQL connection successful\n")
 
+        # Single transaction across all four tables: a failure in any
+        # one (e.g. load_races) leaves none of them partially committed.
         load_seasons(conn)
 
         load_teams(conn)
@@ -368,6 +353,8 @@ def main():
         load_drivers(conn)
 
         load_races(conn)
+
+        conn.commit()
 
         print("\n========================================")
         print("All dimensions loaded successfully")

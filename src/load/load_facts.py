@@ -15,26 +15,24 @@ sys.path.insert(0, str(ROOT_DIR))
 
 
 # ============================================================
-# DATABASE CONNECTION
+# DATABASE CONNECTION / SHARED HELPERS
 # ============================================================
 
-from connection import get_connection
+from src.load.connection import get_connection
+from src.load.io import get_csv, nan_to_none, to_native
+from src.load.schema import FACT_CONFLICT_KEYS as CONFLICT_COLUMNS, FACT_TABLES
 from src.utils.cli import get_year
 
 
 # ============================================================
-# PATHS
-# ============================================================
-
-PROCESSED_FOLDER = (
-    ROOT_DIR
-    / "data"
-    / "processed"
-)
-
+# TARGET SEASON
+#
 # Which season's yearwise CSVs to load. The PostgreSQL fact tables
 # themselves are NOT yearwise -- this only controls which CSV files
-# get read and which season_key gets stamped onto every row.
+# get read and which season_key gets stamped onto every row. Set from
+# argv[1] in __main__.
+# ============================================================
+
 YEAR = 2025
 
 
@@ -141,42 +139,20 @@ INT_COLUMNS = {
     "fact_tire_degradation": ["stint", "stint_length"],
 }
 
-# Unique constraint columns per table (see create_facts.py) -- used as
-# the ON CONFLICT target so re-running the loader for a season that's
-# already loaded does not create duplicate fact rows.
-CONFLICT_COLUMNS = {
-    "fact_braking_metrics": ["race_key", "driver_key"],
-    "fact_championship_standings": ["race_key", "driver_key"],
-    "fact_driver_race_metrics": ["race_key", "driver_key"],
-    "fact_driver_race_telemetry_metrics": ["race_key", "driver_key"],
-    "fact_driver_stints": ["race_key", "driver_key", "stint"],
-    "fact_driver_style_metrics": ["race_key", "driver_key"],
-    "fact_pitstops": ["race_key", "driver_key", "stint"],
-    "fact_tire_degradation": ["race_key", "driver_key", "stint"],
-}
+# CONFLICT_COLUMNS (the per-table ON CONFLICT target that keeps re-runs
+# idempotent) is imported from schema.py as FACT_CONFLICT_KEYS -- the
+# same declaration create_facts.py checks the live tables against.
 
-# One PostgreSQL table per fact, sourced from that season's yearwise
-# CSV (fact_braking_metrics -> fact_braking_metrics_2025.csv for
-# YEAR = 2025). Loading YEAR = 2026 later reads fact_..._2026.csv but
-# inserts into these exact same tables, distinguished by season_key.
-FACT_TABLES = list(COLUMN_RENAMES.keys())
+# FACT_TABLES (import order) is the authoritative list; every entry
+# must have a column mapping here. Loading YEAR = 2026 later reads
+# fact_..._2026.csv but inserts into these same tables, keyed by
+# season_key.
+_unmapped = set(FACT_TABLES) - set(COLUMN_RENAMES)
 
-
-# ============================================================
-# GET CSV
-# ============================================================
-
-def get_csv(filename):
-
-    file = PROCESSED_FOLDER / filename
-
-    if not file.exists():
-
-        raise FileNotFoundError(
-            f"\nRequired file not found:\n{file}"
-        )
-
-    return pd.read_csv(file)
+if _unmapped:
+    raise RuntimeError(
+        f"FACT_TABLES entries missing a COLUMN_RENAMES mapping: {sorted(_unmapped)}"
+    )
 
 
 # ============================================================
@@ -243,15 +219,18 @@ def get_dimension_maps(conn):
         # RACES
         # ----------------------------------------------------
 
+        # dim_races is keyed on (season_key, race) -- a race token
+        # repeats every season -- so the lookup is too.
         cursor.execute("""
             SELECT
                 race_key,
-                race
+                race,
+                season_key
             FROM dim_races
         """)
 
         dimensions["races"] = {
-            row[1]: row[0]
+            (row[2], row[1]): row[0]
             for row in cursor.fetchall()
         }
 
@@ -350,17 +329,27 @@ def add_dimension_keys(
 
     if "Race" in df.columns:
 
-        validate_dimension_values(
-            df,
-            dimensions,
-            "Race",
-            "races"
+        # dimensions["races"] is keyed (season_key, race); narrow it to
+        # this season before validating/mapping the race tokens.
+        season_races = {
+            race: race_key
+            for (race_season_key, race), race_key in dimensions["races"].items()
+            if race_season_key == season_key
+        }
+
+        unknown_races = (
+            set(df["Race"].dropna().unique())
+            - set(season_races)
         )
 
-        df["race_key"] = (
-            df["Race"]
-            .map(dimensions["races"])
-        )
+        if unknown_races:
+
+            raise ValueError(
+                f"\nUnknown Race values for season_key={season_key}:\n"
+                f"{sorted(unknown_races)}"
+            )
+
+        df["race_key"] = df["Race"].map(season_races)
 
         df.drop(
             columns=["Race"],
@@ -489,41 +478,8 @@ def cast_integer_columns(df, table_name):
     return df
 
 
-# ============================================================
-# CLEAN DATAFRAME
-# ============================================================
-
-def clean_dataframe(df):
-
-    df = df.copy()
-
-    # Convert NaN to None
-    df = df.where(
-        pd.notna(df),
-        None
-    )
-
-    return df
-
-
-# ============================================================
-# CONVERT NUMPY SCALARS TO NATIVE PYTHON TYPES
-#
-# psycopg2 cannot adapt numpy.float64/int64 directly -- pandas leaves
-# these in every numeric column read from CSV.
-# ============================================================
-
-def to_native(value):
-
-    if value is None:
-
-        return None
-
-    if hasattr(value, "item"):
-
-        return value.item()
-
-    return value
+# NaN -> None and numpy-scalar -> native-Python coercion both live in
+# src/load/io.py (nan_to_none, to_native), shared with load_dimensions.
 
 
 # ============================================================
@@ -645,6 +601,7 @@ def insert_fact(
             VALUES %s
             ON CONFLICT ({conflict_sql})
             DO NOTHING
+            RETURNING 1
         """
 
     else:
@@ -653,18 +610,23 @@ def insert_fact(
             INSERT INTO {table_name}
             ({columns_sql})
             VALUES %s
+            RETURNING 1
         """
 
+    # fetch=True aggregates RETURNING rows across every page, so this
+    # counts rows actually inserted -- ON CONFLICT DO NOTHING skips are
+    # not counted (unlike len(values) or a batched cursor.rowcount).
     with conn.cursor() as cursor:
 
-        execute_values(
+        inserted = execute_values(
             cursor,
             query,
             values,
-            page_size=1000
+            page_size=1000,
+            fetch=True,
         )
 
-    return len(values)
+    return len(inserted)
 
 
 # ============================================================
@@ -749,7 +711,7 @@ def load_fact(
 
     df = cast_integer_columns(df, table_name)
 
-    df = clean_dataframe(df)
+    df = nan_to_none(df)
 
     # --------------------------------------------------------
     # Insert
@@ -762,8 +724,8 @@ def load_fact(
     )
 
     print(
-        f"{table_name} loaded: "
-        f"{rows_inserted} rows"
+        f"{table_name}: {rows_inserted} rows inserted "
+        f"({len(df) - rows_inserted} already present, skipped)"
     )
 
     return rows_inserted

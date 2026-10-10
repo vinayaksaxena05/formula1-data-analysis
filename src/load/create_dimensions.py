@@ -1,8 +1,6 @@
 import sys
 from pathlib import Path
 
-import psycopg2
-
 
 # ============================================================
 # PROJECT ROOT
@@ -17,7 +15,8 @@ sys.path.insert(0, str(ROOT_DIR))
 # DATABASE CONNECTION
 # ============================================================
 
-from connection import get_connection
+from src.load.connection import get_connection
+from src.load.schema import DIMENSION_CONFLICT_KEYS, assert_schema_current
 
 
 # ============================================================
@@ -25,8 +24,20 @@ from connection import get_connection
 # ============================================================
 
 def create_dimensions(conn):
+    """Ensure the dimension tables exist.
+
+    This is DDL only -- it creates tables if they are absent and reports
+    how many rows each already holds. Populating them is the job of
+    load_dimensions.py, which runs next in the pipeline. A schema change
+    here does NOT reshape an existing table; run rebuild_schema.py first
+    for that.
+    """
 
     with conn.cursor() as cursor:
+
+        # Stop with an actionable message if an existing table has
+        # drifted from the shape below (a stale UNIQUE key, etc.).
+        assert_schema_current(cursor, DIMENSION_CONFLICT_KEYS)
 
         # ====================================================
         # DIM SEASONS
@@ -42,7 +53,7 @@ def create_dimensions(conn):
             );
         """)
 
-        print("dim_seasons loaded")
+        print("dim_seasons ready")
 
 
         # ====================================================
@@ -59,8 +70,6 @@ def create_dimensions(conn):
             );
         """)
 
-        print("Loading dim_teams...")
-
         cursor.execute("""
             SELECT COUNT(*)
             FROM dim_teams;
@@ -68,11 +77,7 @@ def create_dimensions(conn):
 
         team_count = cursor.fetchone()[0]
 
-        print(
-            f"Rows found: {team_count}"
-        )
-
-        print("dim_teams loaded")
+        print(f"dim_teams ready ({team_count} rows)")
 
 
         # ====================================================
@@ -99,8 +104,6 @@ def create_dimensions(conn):
             );
         """)
 
-        print("Loading dim_drivers...")
-
         cursor.execute("""
             SELECT COUNT(*)
             FROM dim_drivers;
@@ -108,21 +111,23 @@ def create_dimensions(conn):
 
         driver_count = cursor.fetchone()[0]
 
-        print(
-            f"Rows found: {driver_count}"
-        )
-
-        print("dim_drivers loaded")
+        print(f"dim_drivers ready ({driver_count} rows)")
 
 
         # ====================================================
         # DIM RACES
         # ====================================================
 
+        # A race token ("monaco", "bahrain", ...) repeats every season, so
+        # the natural key is (season_key, race), not race alone -- otherwise
+        # loading a second season silently collides with the first.
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS dim_races (
 
                 race_key SERIAL PRIMARY KEY,
+
+                season_key INTEGER NOT NULL
+                    REFERENCES dim_seasons(season_key),
 
                 round_number INTEGER NOT NULL,
 
@@ -138,12 +143,12 @@ def create_dimensions(conn):
 
                 sprint_weekend BOOLEAN,
 
-                race VARCHAR(100) NOT NULL UNIQUE
+                race VARCHAR(100) NOT NULL,
+
+                CONSTRAINT uq_dim_races UNIQUE (season_key, race)
 
             );
         """)
-
-        print("Loading dim_races...")
 
         cursor.execute("""
             SELECT COUNT(*)
@@ -152,11 +157,7 @@ def create_dimensions(conn):
 
         race_count = cursor.fetchone()[0]
 
-        print(
-            f"Rows found: {race_count}"
-        )
-
-        print("dim_races loaded")
+        print(f"dim_races ready ({race_count} rows)")
 
 
         # ====================================================
@@ -183,7 +184,7 @@ def main():
         create_dimensions(conn)
 
         print("\n========================================")
-        print("All dimensions loaded successfully")
+        print("All dimension tables ready")
         print("========================================")
 
     except Exception as e:

@@ -8,6 +8,7 @@ ROOT_DIR = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT_DIR))
 
 from src.utils.cli import get_year
+from src.utils.dimensions import merge_dimension
 
 
 def build_season_dimension(year=2025):
@@ -60,10 +61,24 @@ def build_season_dimension(year=2025):
         exist_ok=True
     )
 
-    # No year in dimension filename
+    # Dimensions are cumulative and keyed on their natural key, so a run
+    # for one season merges into any seasons already stored. No year in
+    # the filename.
     output_file = (
         output_folder
         / "dim_seasons.csv"
+    )
+
+    dim_season = merge_dimension(
+        dim_season,
+        output_file,
+        key="SeasonYear"
+    )
+
+    dim_season = (
+        dim_season
+        .sort_values("SeasonYear")
+        .reset_index(drop=True)
     )
 
     dim_season.to_csv(

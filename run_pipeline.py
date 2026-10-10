@@ -7,6 +7,7 @@ from datetime import datetime
 from src.utils.pipeline_cache import (
     is_completed,
     mark_completed,
+    get_file_fingerprint,
 )
 
 
@@ -40,14 +41,17 @@ def extract_force_flag():
     return args.force
 
 
-def run_script(script_path, stage, year=2025, force=False):
+def run_script(
+    script_path,
+    stage,
+    year=2025,
+    force=False,
+    dependencies=None
+):
     """
-    Run a pipeline script unless the stage has already completed.
+    Run a pipeline script unless the stage has already completed
+    and its dependencies are still valid.
     """
-
-    if not force and is_completed(stage, year):
-        log(f"SKIPPING {stage}: already completed for {year}")
-        return
 
     script = ROOT_DIR / script_path
 
@@ -55,6 +59,17 @@ def run_script(script_path, stage, year=2025, force=False):
         raise FileNotFoundError(
             f"Pipeline script not found: {script}"
         )
+
+    fingerprint = get_file_fingerprint(script)
+
+    if not force and is_completed(
+        stage,
+        year,
+        fingerprint=fingerprint,
+        dependencies=dependencies
+    ):
+        log(f"SKIPPING {stage}: cache valid for {year}")
+        return
 
     log(f"Running: {script_path}")
 
@@ -69,9 +84,15 @@ def run_script(script_path, stage, year=2025, force=False):
             f"Pipeline failed while running {script_path}"
         )
 
-    mark_completed(stage, year)
+    mark_completed(
+        stage,
+        year,
+        fingerprint=fingerprint,
+        dependencies=dependencies
+    )
 
     log(f"Completed: {stage}")
+
 
 def main():
 
@@ -88,7 +109,10 @@ def main():
     log(f"Running pipeline for season {year}")
 
     if force:
-        log("Force mode enabled: all stages will re-run regardless of cache")
+        log(
+            "Force mode enabled: all stages will re-run "
+            "regardless of cache"
+        )
 
     try:
 
@@ -102,14 +126,16 @@ def main():
             "src/extract/race_data.py",
             "extract_race_data",
             year,
-            force=force
+            force=force,
+            dependencies=[]
         )
 
         run_script(
             "src/extract/driver_telemetry.py",
             "extract_driver_telemetry",
             year,
-            force=force
+            force=force,
+            dependencies=[]
         )
 
 
@@ -120,22 +146,88 @@ def main():
         log("STEP 2: Transformation")
 
         transform_stages = [
-            ("src/transform/build_season_dimension.py", "transform_season"),
-            ("src/transform/build_team_dimension.py", "transform_teams"),
-            ("src/transform/build_driver_dimension.py", "transform_drivers"),
-            ("src/transform/build_race_dimension.py", "transform_races"),
 
-            ("src/transform/build_championship_standings.py", "transform_championship"),
-            ("src/transform/build_driver_braking_metrics.py", "transform_braking"),
-            ("src/transform/build_driver_pace_metrics.py", "transform_pace"),
-            ("src/transform/build_driver_race_telemetry_metrics.py", "transform_race_telemetry"),
-            ("src/transform/build_driver_stints.py", "transform_stints"),
-            ("src/transform/build_pitstop_summary.py", "transform_pitstops"),
-            ("src/transform/build_tire_degradation_analysis.py", "transform_tire_degradation"),
+            (
+                "src/transform/build_season_dimension.py",
+                "transform_season",
+                []
+            ),
+
+            (
+                "src/transform/build_team_dimension.py",
+                "transform_teams",
+                ["extract_race_data"]
+            ),
+
+            (
+                "src/transform/build_driver_dimension.py",
+                "transform_drivers",
+                ["extract_race_data"]
+            ),
+
+            (
+                "src/transform/build_race_dimension.py",
+                "transform_races",
+                ["extract_race_data"]
+            ),
+
+            (
+                "src/transform/build_championship_standings.py",
+                "transform_championship",
+                [
+                    "transform_season",
+                    "transform_teams",
+                    "transform_drivers",
+                    "transform_races"
+                ]
+            ),
+
+            (
+                "src/transform/build_driver_braking_metrics.py",
+                "transform_braking",
+                ["extract_driver_telemetry"]
+            ),
+
+            (
+                "src/transform/build_driver_pace_metrics.py",
+                "transform_pace",
+                ["extract_race_data"]
+            ),
+
+            (
+                "src/transform/build_driver_race_telemetry_metrics.py",
+                "transform_race_telemetry",
+                ["extract_driver_telemetry"]
+            ),
+
+            (
+                "src/transform/build_driver_stints.py",
+                "transform_stints",
+                ["extract_race_data"]
+            ),
+
+            (
+                "src/transform/build_pitstop_summary.py",
+                "transform_pitstops",
+                ["extract_race_data"]
+            ),
+
+            (
+                "src/transform/build_tire_degradation_analysis.py",
+                "transform_tire_degradation",
+                ["transform_stints"]
+            ),
         ]
 
-        for script, stage in transform_stages:
-            run_script(script, stage, year, force=force)
+        for script, stage, dependencies in transform_stages:
+
+            run_script(
+                script,
+                stage,
+                year,
+                force=force,
+                dependencies=dependencies
+            )
 
 
         # --------------------------------------------------
@@ -148,14 +240,23 @@ def main():
             "src/load/create_dimensions.py",
             "create_dimensions",
             year,
-            force=force
+            force=force,
+            dependencies=[
+                "transform_season",
+                "transform_teams",
+                "transform_drivers",
+                "transform_races"
+            ]
         )
 
         run_script(
             "src/load/load_dimensions.py",
             "load_dimensions",
             year,
-            force=force
+            force=force,
+            dependencies=[
+                "create_dimensions"
+            ]
         )
 
 
@@ -169,14 +270,27 @@ def main():
             "src/load/create_facts.py",
             "create_facts",
             year,
-            force=force
+            force=force,
+            dependencies=[
+                "transform_championship",
+                "transform_braking",
+                "transform_pace",
+                "transform_race_telemetry",
+                "transform_stints",
+                "transform_pitstops",
+                "transform_tire_degradation"
+            ]
         )
 
         run_script(
             "src/load/load_facts.py",
             "load_facts",
             year,
-            force=force
+            force=force,
+            dependencies=[
+                "create_facts",
+                "load_dimensions"
+            ]
         )
 
 
@@ -190,8 +304,13 @@ def main():
             "src/load/create_views.py",
             "create_views",
             year,
-            force=force
+            force=force,
+            dependencies=[
+                "load_dimensions",
+                "load_facts"
+            ]
         )
+
 
         # --------------------------------------------------
         # 6. DATA QUALITY VALIDATION
@@ -203,12 +322,11 @@ def main():
             "src/load/validate_pipeline.py",
             "validation",
             year,
-            force=force
+            force=force,
+            dependencies=[
+                "create_views"
+            ]
         )
-
-
-        # View creation will be automated in the next step.
-        # For now, PostgreSQL views remain managed by SQL files.
 
 
         # --------------------------------------------------
@@ -235,7 +353,6 @@ def main():
         print("=" * 60)
 
         sys.exit(1)
-
 
 
 if __name__ == "__main__":

@@ -1,6 +1,13 @@
-import psycopg2
+import sys
+from pathlib import Path
 
-from connection import get_connection
+
+ROOT_DIR = Path(__file__).resolve().parents[2]
+
+sys.path.insert(0, str(ROOT_DIR))
+
+from src.load.connection import get_connection
+from src.load.schema import FACT_CONFLICT_KEYS, assert_schema_current
 
 
 def create_facts():
@@ -9,28 +16,14 @@ def create_facts():
     cursor = conn.cursor()
 
     # ------------------------------------------------------------
-    # DROP (dependency-safe: facts don't reference each other, so
-    # order among them doesn't matter -- CASCADE guards against any
-    # dependent objects e.g. views built on top of an old table)
-    # ------------------------------------------------------------
-
-    drop_queries = [
-        "DROP TABLE IF EXISTS fact_braking_metrics CASCADE;",
-        "DROP TABLE IF EXISTS fact_championship_standings CASCADE;",
-        "DROP TABLE IF EXISTS fact_driver_race_metrics CASCADE;",
-        "DROP TABLE IF EXISTS fact_driver_race_telemetry_metrics CASCADE;",
-        "DROP TABLE IF EXISTS fact_driver_stints CASCADE;",
-        "DROP TABLE IF EXISTS fact_driver_style_metrics CASCADE;",
-        "DROP TABLE IF EXISTS fact_pitstops CASCADE;",
-        "DROP TABLE IF EXISTS fact_tire_degradation CASCADE;",
-    ]
-
-    # ------------------------------------------------------------
-    # CREATE
+    # CREATE (idempotent)
     #
     # Every fact table is season-agnostic: one table holds every
     # season's rows, distinguished by season_key -> dim_seasons.
-    # No table (and no column) is named/scoped per year.
+    # CREATE TABLE IF NOT EXISTS so re-running the pipeline for a new
+    # season adds to the tables rather than dropping prior seasons'
+    # data. A schema change here does NOT reshape an existing table --
+    # run rebuild_schema.py first for that.
     # ------------------------------------------------------------
 
     create_queries = [
@@ -40,7 +33,7 @@ def create_facts():
         # Grain: 1 driver x 1 race
         # ---------------------------------
         """
-        CREATE TABLE fact_braking_metrics (
+        CREATE TABLE IF NOT EXISTS fact_braking_metrics (
             braking_metric_key SERIAL PRIMARY KEY,
 
             season_key INTEGER NOT NULL
@@ -66,7 +59,7 @@ def create_facts():
         # Grain: 1 driver x 1 race
         # ---------------------------------
         """
-        CREATE TABLE fact_championship_standings (
+        CREATE TABLE IF NOT EXISTS fact_championship_standings (
             championship_standing_key SERIAL PRIMARY KEY,
 
             season_key INTEGER NOT NULL
@@ -94,7 +87,7 @@ def create_facts():
         # Grain: 1 driver x 1 race
         # ---------------------------------
         """
-        CREATE TABLE fact_driver_race_metrics (
+        CREATE TABLE IF NOT EXISTS fact_driver_race_metrics (
             driver_race_metric_key SERIAL PRIMARY KEY,
 
             season_key INTEGER NOT NULL
@@ -119,7 +112,7 @@ def create_facts():
         # Grain: 1 driver x 1 race
         # ---------------------------------
         """
-        CREATE TABLE fact_driver_race_telemetry_metrics (
+        CREATE TABLE IF NOT EXISTS fact_driver_race_telemetry_metrics (
             driver_race_telemetry_metric_key SERIAL PRIMARY KEY,
 
             season_key INTEGER NOT NULL
@@ -148,7 +141,7 @@ def create_facts():
         # Grain: 1 driver x race x stint
         # ---------------------------------
         """
-        CREATE TABLE fact_driver_stints (
+        CREATE TABLE IF NOT EXISTS fact_driver_stints (
             driver_stint_key SERIAL PRIMARY KEY,
 
             season_key INTEGER NOT NULL
@@ -174,7 +167,7 @@ def create_facts():
         # Grain: 1 driver x 1 race
         # ---------------------------------
         """
-        CREATE TABLE fact_driver_style_metrics (
+        CREATE TABLE IF NOT EXISTS fact_driver_style_metrics (
             driver_style_metric_key SERIAL PRIMARY KEY,
 
             season_key INTEGER NOT NULL
@@ -203,7 +196,7 @@ def create_facts():
         # Grain: 1 driver x race x stint
         # ---------------------------------
         """
-        CREATE TABLE fact_pitstops (
+        CREATE TABLE IF NOT EXISTS fact_pitstops (
             pitstop_key SERIAL PRIMARY KEY,
 
             season_key INTEGER NOT NULL
@@ -227,7 +220,7 @@ def create_facts():
         # Grain: 1 driver x race x stint
         # ---------------------------------
         """
-        CREATE TABLE fact_tire_degradation (
+        CREATE TABLE IF NOT EXISTS fact_tire_degradation (
             tire_degradation_key SERIAL PRIMARY KEY,
 
             season_key INTEGER NOT NULL
@@ -255,15 +248,16 @@ def create_facts():
 
     try:
 
-        for query in drop_queries:
-            cursor.execute(query)
+        # Stop with an actionable message if an existing fact table has
+        # drifted from the shape below (a stale UNIQUE key, etc.).
+        assert_schema_current(cursor, FACT_CONFLICT_KEYS)
 
         for query in create_queries:
             cursor.execute(query)
 
         conn.commit()
 
-        print("All fact tables dropped and recreated successfully!")
+        print("All fact tables ready")
 
     except Exception as e:
 

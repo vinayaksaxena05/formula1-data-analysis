@@ -28,3 +28,6 @@ JOIN dim_races r
 
 JOIN dim_drivers d
     ON f.driver_key = d.driver_key;
+
+
+    

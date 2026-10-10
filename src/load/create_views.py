@@ -37,6 +37,9 @@ def create_views():
             f"Visualization directory not found: {VISUALIZATION_DIR}"
         )
 
+    # Filename order. Safe today because every vw_*.sql reads dim_/fact_
+    # tables only -- no view depends on another view. If that changes,
+    # this needs an explicit dependency order.
     sql_files = sorted(
         VISUALIZATION_DIR.glob("*.sql")
     )

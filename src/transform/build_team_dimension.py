@@ -8,6 +8,7 @@ ROOT_DIR = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT_DIR))
 
 from src.utils.cli import get_year
+from src.utils.dimensions import merge_dimension
 
 
 def build_team_dimension(year=2025):
@@ -124,10 +125,25 @@ def build_team_dimension(year=2025):
         exist_ok=True
     )
 
-    # No year in dimension filename
+    # No year in the filename: this dimension is cumulative across seasons
+    # and keyed on TeamId. TeamName / TeamColor are treated as SCD type 1
+    # (latest season wins); if per-season liveries ever matter they belong
+    # in a season-keyed fact, not this table.
     output_file = (
         output_folder
         / "dim_teams.csv"
+    )
+
+    dim_team = merge_dimension(
+        dim_team,
+        output_file,
+        key="TeamId"
+    )
+
+    dim_team = (
+        dim_team
+        .sort_values("TeamId")
+        .reset_index(drop=True)
     )
 
     dim_team.to_csv(
