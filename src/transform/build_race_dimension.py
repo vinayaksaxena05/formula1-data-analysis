@@ -9,6 +9,7 @@ sys.path.insert(0, str(ROOT_DIR))
 
 from src.utils.schedule import get_race_folder_name
 from src.utils.cli import get_year
+from src.utils.dimensions import merge_dimension
 
 year = get_year(default=2025)
 
@@ -76,7 +77,22 @@ dim_races["SprintWeekend"] = dim_races["EventFormat"].apply(
 # flag -- the warehouse's dim_race stores both the raw FastF1 event format
 # and the boolean convenience flag.
 
-output_file = processed_folder / f"dim_races_{year}.csv"
+# Unlike the other dimensions, a race's natural key is not stable on its
+# own -- "monaco" etc. repeats every season -- so the cumulative file
+# carries a Season column and is keyed on (Season, Race).
+dim_races["Season"] = year
+
+output_file = processed_folder / "dim_races.csv"
+
+dim_races = merge_dimension(
+    dim_races,
+    output_file,
+    key=["Season", "Race"]
+)
+
+dim_races = dim_races.sort_values(
+    ["Season", "RoundNumber"]
+).reset_index(drop=True)
 
 dim_races.to_csv(
     output_file,

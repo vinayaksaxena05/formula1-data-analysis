@@ -5,6 +5,35 @@ log started 2026-08-17 as part of fixing correctness bugs found during an
 ETL review; every change from that point forward is recorded, not just
 bug fixes.
 
+## 2026-10-11
+
+Closed out the one item the 2026-09-09 review deferred: `build_race_dimension.py`
+was still writing a per-year file while the other three dimensions had
+already moved to the cumulative model.
+
+### Changed
+
+- `build_race_dimension.py`: writes cumulative `dim_races.csv` instead of
+  `dim_races_{year}.csv`, merged via `merge_dimension`. A race's natural
+  key is not stable on its own (`"monaco"` etc. repeats every season), so
+  the CSV now carries a `Season` column and is keyed on `(Season, Race)`.
+- `src/load/load_dimensions.py::load_races`: reads the cumulative
+  `dim_races.csv` in full (matching how `load_seasons`/`load_teams`/
+  `load_drivers` already work) instead of a single run's per-year file.
+  Resolves `season_key` per row from its own `Season` value rather than
+  stamping one run-wide season onto every row.
+
+### Removed
+
+- `data/processed/dim_races_2025.csv` — superseded by the cumulative
+  `dim_races.csv`.
+
+### Verification performed
+
+- `python -m py_compile` on both changed files.
+- Ran `build_race_dimension.py 2025` standalone: produced `dim_races.csv`
+  with 24 rows, all `Season == 2025`.
+
 ## 2026-09-09
 
 Two bodies of work: (1) dimension CSVs made cumulative and year-free on

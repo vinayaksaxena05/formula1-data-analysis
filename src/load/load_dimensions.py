@@ -245,7 +245,7 @@ def get_season_key(conn, year):
 
 def load_races(conn):
 
-    file = f"dim_races_{YEAR}.csv"
+    file = "dim_races.csv"
 
     df = get_csv(file)
 
@@ -253,6 +253,7 @@ def load_races(conn):
     print(f"Rows found: {len(df)}")
 
     required = [
+        "Season",
         "RoundNumber",
         "Country",
         "Location",
@@ -275,17 +276,21 @@ def load_races(conn):
     df = df[
         required
     ].drop_duplicates(
-        subset=["Race"]
+        subset=["Season", "Race"]
     )
 
     # A race token repeats every season, so dim_races is keyed on
-    # (season_key, race). The CSV has no season column, so stamp it
-    # from the target year -- the same thing load_facts.py does.
-    season_key = get_season_key(conn, YEAR)
+    # (season_key, race). The CSV is now cumulative across seasons, so
+    # each row resolves its own season_key from its own Season value
+    # rather than a single run-wide one.
+    season_keys = {
+        season: get_season_key(conn, int(season))
+        for season in df["Season"].unique()
+    }
 
     rows = [
         (
-            season_key,
+            season_keys[row["Season"]],
             int(row["RoundNumber"]),
             to_native(row["Country"]),
             to_native(row["Location"]),
