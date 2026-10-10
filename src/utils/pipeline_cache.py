@@ -50,24 +50,47 @@ def _save_state(state):
     temp_file.replace(STATE_FILE)
 
 
-def get_file_fingerprint(path):
+def get_file_fingerprint(paths):
     """
-    Generate a SHA-256 fingerprint for a file.
+    Generate a combined SHA-256 fingerprint for one file or an iterable
+    of files.
+
+    A stage's script often imports shared helper modules (schema.py,
+    io.py, connection.py); fingerprinting only the entry-point script
+    means a bug fix in one of those helpers goes undetected and the
+    stage is wrongly skipped as "cache valid". Pass every file whose
+    changes should invalidate the stage.
+
+    Missing files are skipped (so a caller can pass an optional extra
+    file without checking existence first); if every path is missing,
+    returns None. Path order matters -- callers must pass a consistent
+    order across runs for the fingerprint to be stable.
     """
 
-    path = Path(path)
-
-    if not path.exists():
-        return None
+    if isinstance(paths, (str, Path)):
+        paths = [paths]
 
     digest = hashlib.sha256()
+    found_any = False
 
-    with open(path, "rb") as file:
-        for chunk in iter(
-            lambda: file.read(1024 * 1024),
-            b""
-        ):
-            digest.update(chunk)
+    for path in paths:
+
+        path = Path(path)
+
+        if not path.exists():
+            continue
+
+        found_any = True
+
+        with open(path, "rb") as file:
+            for chunk in iter(
+                lambda: file.read(1024 * 1024),
+                b""
+            ):
+                digest.update(chunk)
+
+    if not found_any:
+        return None
 
     return digest.hexdigest()
 

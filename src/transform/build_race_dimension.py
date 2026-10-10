@@ -9,7 +9,7 @@ sys.path.insert(0, str(ROOT_DIR))
 
 from src.utils.schedule import get_race_folder_name
 from src.utils.cli import get_year
-from src.utils.dimensions import merge_dimension
+from src.utils.dimensions import merge_dimension, write_dimension_csv
 
 year = get_year(default=2025)
 
@@ -94,9 +94,9 @@ dim_races = dim_races.sort_values(
     ["Season", "RoundNumber"]
 ).reset_index(drop=True)
 
-dim_races.to_csv(
-    output_file,
-    index=False
+write_dimension_csv(
+    dim_races,
+    output_file
 )
 
 print(dim_races.head())

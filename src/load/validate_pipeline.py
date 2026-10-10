@@ -24,13 +24,14 @@ DRIVER_RACE_GRAIN_OBJECTS = [
     "vw_driver_style",
 ]
 
-FOREIGN_KEY_CHECKS = [
-    ("fact_driver_race_metrics", "driver_key", "dim_drivers", "driver_key"),
-    ("fact_driver_race_metrics", "race_key", "dim_races", "race_key"),
-    ("fact_driver_race_metrics", "season_key", "dim_seasons", "season_key"),
-    ("fact_championship_standings", "driver_key", "dim_drivers", "driver_key"),
-    ("fact_championship_standings", "race_key", "dim_races", "race_key"),
-    ("fact_championship_standings", "season_key", "dim_seasons", "season_key"),
+# Every fact table carries these three FK columns (enforced by
+# check_null_keys below), so the FK check applies uniformly to all of
+# FACT_TABLES instead of a hand-maintained per-table list that silently
+# stops covering new fact tables.
+FK_DIMENSIONS = [
+    ("driver_key", "dim_drivers", "driver_key"),
+    ("race_key", "dim_races", "race_key"),
+    ("season_key", "dim_seasons", "season_key"),
 ]
 
 
@@ -74,32 +75,33 @@ def check_null_keys(cursor, table, columns):
 
 def check_foreign_keys(cursor):
 
-    for fact, fact_key, dimension, dimension_key in FOREIGN_KEY_CHECKS:
+    for fact in FACT_TABLES:
+        for fact_key, dimension, dimension_key in FK_DIMENSIONS:
 
-        query = sql.SQL(
-            """
-            SELECT COUNT(*)
-            FROM {fact} f
-            LEFT JOIN {dimension} d
-                ON f.{fact_key} = d.{dimension_key}
-            WHERE f.{fact_key} IS NOT NULL
-              AND d.{dimension_key} IS NULL
-            """
-        ).format(
-            fact=sql.Identifier(fact),
-            dimension=sql.Identifier(dimension),
-            fact_key=sql.Identifier(fact_key),
-            dimension_key=sql.Identifier(dimension_key),
-        )
-
-        count = _count(cursor, query)
-
-        if count > 0:
-            raise ValueError(
-                f"{fact}.{fact_key} has {count:,} orphaned keys"
+            query = sql.SQL(
+                """
+                SELECT COUNT(*)
+                FROM {fact} f
+                LEFT JOIN {dimension} d
+                    ON f.{fact_key} = d.{dimension_key}
+                WHERE f.{fact_key} IS NOT NULL
+                  AND d.{dimension_key} IS NULL
+                """
+            ).format(
+                fact=sql.Identifier(fact),
+                dimension=sql.Identifier(dimension),
+                fact_key=sql.Identifier(fact_key),
+                dimension_key=sql.Identifier(dimension_key),
             )
 
-        print(f"✓ {fact}.{fact_key} → {dimension}.{dimension_key}")
+            count = _count(cursor, query)
+
+            if count > 0:
+                raise ValueError(
+                    f"{fact}.{fact_key} has {count:,} orphaned keys"
+                )
+
+            print(f"✓ {fact}.{fact_key} → {dimension}.{dimension_key}")
 
 
 def check_expected_season(cursor, year):

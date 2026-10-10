@@ -591,10 +591,38 @@ def insert_fact(
 
     conflict_columns = CONFLICT_COLUMNS.get(table_name)
 
-    if conflict_columns:
+    update_columns = [
+        column
+        for column in insert_columns
+        if column not in (conflict_columns or [])
+    ]
 
+    if conflict_columns and update_columns:
+
+        # DO UPDATE, not DO NOTHING: now that create_facts.py no longer
+        # drops tables every run, a season re-run after fixing a
+        # transform bug has to overwrite the stale metric values already
+        # in Postgres, not silently skip them.
         conflict_sql = ", ".join(conflict_columns)
 
+        update_sql = ", ".join(
+            f'"{column}" = EXCLUDED."{column}"'
+            for column in update_columns
+        )
+
+        query = f"""
+            INSERT INTO {table_name}
+            ({columns_sql})
+            VALUES %s
+            ON CONFLICT ({conflict_sql})
+            DO UPDATE SET {update_sql}
+            RETURNING 1
+        """
+
+    elif conflict_columns:
+
+        # Every insertable column is part of the conflict key -- there
+        # is nothing left to update, so DO UPDATE SET would be empty.
         query = f"""
             INSERT INTO {table_name}
             ({columns_sql})
@@ -614,11 +642,10 @@ def insert_fact(
         """
 
     # fetch=True aggregates RETURNING rows across every page, so this
-    # counts rows actually inserted -- ON CONFLICT DO NOTHING skips are
-    # not counted (unlike len(values) or a batched cursor.rowcount).
+    # counts every row written -- inserted or (with DO UPDATE) updated.
     with conn.cursor() as cursor:
 
-        inserted = execute_values(
+        written = execute_values(
             cursor,
             query,
             values,
@@ -626,7 +653,7 @@ def insert_fact(
             fetch=True,
         )
 
-    return len(inserted)
+    return len(written)
 
 
 # ============================================================
@@ -717,18 +744,18 @@ def load_fact(
     # Insert
     # --------------------------------------------------------
 
-    rows_inserted = insert_fact(
+    rows_written = insert_fact(
         conn,
         df,
         table_name
     )
 
     print(
-        f"{table_name}: {rows_inserted} rows inserted "
-        f"({len(df) - rows_inserted} already present, skipped)"
+        f"{table_name}: {rows_written} rows written "
+        f"(inserted or updated; {len(df)} rows in file)"
     )
 
-    return rows_inserted
+    return rows_written
 
 
 # ============================================================
@@ -808,7 +835,7 @@ def main():
         print("=" * 60)
 
         print(
-            f"Total rows inserted: "
+            f"Total rows written: "
             f"{total_rows}"
         )
 

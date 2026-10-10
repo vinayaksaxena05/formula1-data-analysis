@@ -23,6 +23,7 @@ sys.path.insert(0, str(ROOT_DIR))
 
 from src.load.connection import get_connection
 from src.load.schema import drop_all
+from src.utils.pipeline_cache import clear_cache
 
 
 def rebuild_schema():
@@ -41,7 +42,16 @@ def rebuild_schema():
 
         conn.commit()
 
+        # Every season's cached "stage completed" state now points at
+        # tables that no longer exist. Without this, run_pipeline.py
+        # <year> (without --force) for any previously-loaded season
+        # would see a valid-looking cache and skip reloading it --
+        # silently leaving that season's data gone even though its CSVs
+        # are still on disk.
+        clear_cache()
+
         print("\nAll warehouse tables and views dropped.")
+        print("Pipeline cache cleared for all seasons.")
         print("Next: python run_pipeline.py <year> --force")
 
     except Exception as error:

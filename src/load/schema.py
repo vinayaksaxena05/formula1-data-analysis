@@ -41,7 +41,7 @@ VIEWS = [
 # checks actually exists on the live table.
 DIMENSION_CONFLICT_KEYS = {
     "dim_seasons": ["season"],
-    "dim_teams": ["team_name"],
+    "dim_teams": ["team_id"],
     "dim_drivers": ["abbreviation"],
     "dim_races": ["season_key", "race"],
 }

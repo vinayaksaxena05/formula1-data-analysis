@@ -9,6 +9,7 @@ duplicated (and only ``load_facts`` had the numpy/NaN handling).
 from pathlib import Path
 
 import pandas as pd
+from psycopg2.extras import execute_values
 
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
@@ -57,3 +58,19 @@ def nan_to_none(df: pd.DataFrame) -> pd.DataFrame:
     """Return a copy of ``df`` with every NaN / NaT replaced by ``None``."""
 
     return df.astype(object).where(pd.notna(df), None)
+
+
+def run_insert(conn, query: str, rows: list[tuple]) -> None:
+    """Execute a ``VALUES %s`` insert query via ``execute_values``.
+
+    Factors out the cursor-open/execute pattern repeated across
+    ``load_dimensions.py``'s insert functions.
+    """
+
+    with conn.cursor() as cursor:
+
+        execute_values(
+            cursor,
+            query,
+            rows
+        )

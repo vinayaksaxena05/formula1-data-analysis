@@ -7,11 +7,13 @@ bug fixes.
 
 ## 2026-10-11
 
-Closed out the one item the 2026-09-09 review deferred: `build_race_dimension.py`
-was still writing a per-year file while the other three dimensions had
-already moved to the cumulative model.
+Two bodies of work: (1) closed out the one item the 2026-09-09 review
+deferred -- `build_race_dimension.py` was still writing a per-year file
+while the other three dimensions had already moved to the cumulative
+model; (2) a cloud multi-agent review of that whole 2026-09-09 change
+set, with every finding (not just the correctness bugs) fixed.
 
-### Changed
+### Changed — cumulative race dimension
 
 - `build_race_dimension.py`: writes cumulative `dim_races.csv` instead of
   `dim_races_{year}.csv`, merged via `merge_dimension`. A race's natural
@@ -28,11 +30,85 @@ already moved to the cumulative model.
 - `data/processed/dim_races_2025.csv` — superseded by the cumulative
   `dim_races.csv`.
 
+### Fixed — review findings
+
+- **Stale fact data on re-run**: `load_facts.py::insert_fact()` used
+  `ON CONFLICT ... DO NOTHING`, so re-running a season after fixing a
+  transform bug left the old metric values in Postgres forever (only
+  possible now that `create_facts.py` stopped dropping tables every
+  run). Changed to `DO UPDATE SET` over every non-key column, falling
+  back to `DO NOTHING` only when a table's key covers every insertable
+  column.
+- **`rebuild_schema.py` left a stale pipeline cache**: it dropped every
+  table but never invalidated `pipeline_cache`'s per-season completion
+  state, so `run_pipeline.py <year>` (without `--force`) for any
+  previously-loaded season would see a cache that still looked valid and
+  skip reloading it, even though the tables backing that cache entry no
+  longer existed. `rebuild_schema.py` now calls `clear_cache()`.
+- **`merge_dimension`'s "latest wins" was run order, not season order**:
+  `keep="last"` picked whichever run happened most recently, not
+  whichever season was chronologically latest, so re-running an older
+  season after a newer one silently reverted `TeamName`/`TeamColor`/
+  `DriverNumber` to the older season's values. `merge_dimension` now
+  takes an `order_by` column; `build_team_dimension.py` and
+  `build_driver_dimension.py` stamp a `LastUpdatedSeason` column and
+  pass it, so the dimension's attributes always reflect the
+  chronologically latest season regardless of run order.
+- **`dim_teams` key mismatch**: `load_teams()` still deduped/conflicted
+  on `TeamName`, dropping the `TeamId`/`TeamColor` columns the CSV had
+  carried since 2026-09-09, while `dim_teams` itself had no `team_id`
+  column at all. Added `team_id` (the new `UNIQUE` key) and `team_color`
+  to the table, updated `DIMENSION_CONFLICT_KEYS`, and `load_teams()` now
+  loads and `DO UPDATE`s all three columns keyed on `team_id`.
+- **`load_drivers()`/`load_races()` also `DO NOTHING`**: same class of
+  bug as the fact-table one above -- re-running a season could never
+  update `dim_drivers.driver_number` or any `dim_races` attribute.
+  Both switched to `DO UPDATE SET` on their non-key columns.
+- **FK validation only covered 2 of 8 fact tables**: `validate_pipeline.py`
+  had a hand-maintained `FOREIGN_KEY_CHECKS` list naming only
+  `fact_driver_race_metrics` and `fact_championship_standings`, so an
+  orphaned `race_key`/`driver_key`/`season_key` in any of the other six
+  fact tables would pass validation undetected. Replaced with a loop
+  over all of `FACT_TABLES` × the three FK dimensions (every fact table
+  already carries these three columns, per the existing null-key check).
+- **Pipeline cache fingerprinted only the entry-point script**:
+  `get_file_fingerprint()` hashed a single file, so a bug fix in the
+  shared `schema.py`/`io.py`/`connection.py` any `src/load/` script
+  imports left that script's cached fingerprint unchanged -- the stage
+  would be wrongly skipped as "cache valid" on the next run. Now accepts
+  a file or list of files; `run_pipeline.py` fingerprints every
+  `src/load/` stage against the full shared-helper set alongside its
+  entry script.
+- **Dimension CSV writes weren't atomic**: `build_season_dimension.py`/
+  `build_team_dimension.py`/`build_driver_dimension.py`/
+  `build_race_dimension.py` wrote via `df.to_csv(output_file, ...)`,
+  which truncates the target immediately -- a process killed mid-write
+  would leave the cumulative, multi-season CSV empty or truncated with
+  no backup. Added `write_dimension_csv()` (temp file + atomic replace,
+  the same pattern `pipeline_cache._save_state()` already used) and
+  switched all four builders to it.
+- **`transform_season` was missing a dependency**: it reads the same
+  `data/raw/<year>` folder `transform_teams`/`transform_drivers`/
+  `transform_races` do, but was the only one of the four not declaring
+  `extract_race_data` as a dependency in `run_pipeline.py`.
+- **Duplicated insert boilerplate**: `load_dimensions.py`'s four insert
+  functions each hand-rolled the same `with conn.cursor() as cursor:
+  execute_values(...)` block. Factored into `run_insert()` in
+  `src/load/io.py`.
+
 ### Verification performed
 
-- `python -m py_compile` on both changed files.
-- Ran `build_race_dimension.py 2025` standalone: produced `dim_races.csv`
-  with 24 rows, all `Season == 2025`.
+- `python -m py_compile` on every changed file.
+- `assert_schema_current()` confirmed it correctly flags the live
+  `dim_teams` table as out of date for the new `team_id` key before any
+  rebuild.
+- Full `python src/load/rebuild_schema.py` + `python run_pipeline.py 2025
+  --force` end-to-end run against the live database: all stages
+  completed, 5,497 fact rows written, all 24 FK checks (8 fact tables ×
+  3 dimensions, up from 6) passed, `ALL DATA QUALITY CHECKS PASSED`.
+- Re-ran `python run_pipeline.py 2025` without `--force` immediately
+  after: every stage correctly reported `cache valid` and skipped,
+  confirming the fingerprint changes didn't break normal caching.
 
 ## 2026-09-09
 

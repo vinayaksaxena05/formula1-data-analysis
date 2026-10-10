@@ -18,6 +18,19 @@ sys.path.insert(0, str(ROOT_DIR))
 from src.utils.cli import get_year
 
 
+# Every src/load/ entry script imports some subset of these shared
+# helpers. Fingerprinting only the entry script would let a bug fix in
+# one of these go undetected, leaving the stage wrongly marked "cache
+# valid" and skipped. Fingerprinting the full set for every src/load/
+# stage over-includes a little (e.g. create_views.py doesn't use io.py)
+# but never under-invalidates, which is the failure mode that matters.
+SHARED_LOAD_FILES = [
+    "src/load/connection.py",
+    "src/load/schema.py",
+    "src/load/io.py",
+]
+
+
 def log(message):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(f"[{timestamp}] {message}")
@@ -46,7 +59,8 @@ def run_script(
     stage,
     year=2025,
     force=False,
-    dependencies=None
+    dependencies=None,
+    extra_fingerprint_files=None
 ):
     """
     Run a pipeline script unless the stage has already completed
@@ -60,7 +74,12 @@ def run_script(
             f"Pipeline script not found: {script}"
         )
 
-    fingerprint = get_file_fingerprint(script)
+    fingerprint_paths = [script] + [
+        ROOT_DIR / extra_file
+        for extra_file in (extra_fingerprint_files or [])
+    ]
+
+    fingerprint = get_file_fingerprint(fingerprint_paths)
 
     if not force and is_completed(
         stage,
@@ -150,7 +169,7 @@ def main():
             (
                 "src/transform/build_season_dimension.py",
                 "transform_season",
-                []
+                ["extract_race_data"]
             ),
 
             (
@@ -246,7 +265,8 @@ def main():
                 "transform_teams",
                 "transform_drivers",
                 "transform_races"
-            ]
+            ],
+            extra_fingerprint_files=SHARED_LOAD_FILES
         )
 
         run_script(
@@ -256,7 +276,8 @@ def main():
             force=force,
             dependencies=[
                 "create_dimensions"
-            ]
+            ],
+            extra_fingerprint_files=SHARED_LOAD_FILES
         )
 
 
@@ -279,7 +300,8 @@ def main():
                 "transform_stints",
                 "transform_pitstops",
                 "transform_tire_degradation"
-            ]
+            ],
+            extra_fingerprint_files=SHARED_LOAD_FILES
         )
 
         run_script(
@@ -290,7 +312,8 @@ def main():
             dependencies=[
                 "create_facts",
                 "load_dimensions"
-            ]
+            ],
+            extra_fingerprint_files=SHARED_LOAD_FILES
         )
 
 
@@ -308,7 +331,8 @@ def main():
             dependencies=[
                 "load_dimensions",
                 "load_facts"
-            ]
+            ],
+            extra_fingerprint_files=SHARED_LOAD_FILES
         )
 
 
@@ -325,7 +349,8 @@ def main():
             force=force,
             dependencies=[
                 "create_views"
-            ]
+            ],
+            extra_fingerprint_files=SHARED_LOAD_FILES
         )
 
 

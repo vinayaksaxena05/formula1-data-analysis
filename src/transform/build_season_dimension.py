@@ -8,7 +8,7 @@ ROOT_DIR = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT_DIR))
 
 from src.utils.cli import get_year
-from src.utils.dimensions import merge_dimension
+from src.utils.dimensions import merge_dimension, write_dimension_csv
 
 
 def build_season_dimension(year=2025):
@@ -81,9 +81,9 @@ def build_season_dimension(year=2025):
         .reset_index(drop=True)
     )
 
-    dim_season.to_csv(
-        output_file,
-        index=False
+    write_dimension_csv(
+        dim_season,
+        output_file
     )
 
     print("\n--------------------------------")

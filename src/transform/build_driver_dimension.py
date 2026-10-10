@@ -8,7 +8,7 @@ ROOT_DIR = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT_DIR))
 
 from src.utils.cli import get_year
-from src.utils.dimensions import merge_dimension
+from src.utils.dimensions import merge_dimension, write_dimension_csv
 
 
 def build_driver_dimension(year=2025):
@@ -121,6 +121,12 @@ def build_driver_dimension(year=2025):
         .reset_index(drop=True)
     )
 
+    # Tags each row with the season that produced it, so merge_dimension
+    # can resolve "latest wins" by season chronology instead of by which
+    # run happened most recently (re-running an older season after a
+    # newer one must not revert the newer season's DriverNumber).
+    dim_driver["LastUpdatedSeason"] = year
+
     output_folder = (
         ROOT_DIR
         / "data"
@@ -144,7 +150,8 @@ def build_driver_dimension(year=2025):
     dim_driver = merge_dimension(
         dim_driver,
         output_file,
-        key="Abbreviation"
+        key="Abbreviation",
+        order_by="LastUpdatedSeason"
     )
 
     dim_driver = (
@@ -153,9 +160,9 @@ def build_driver_dimension(year=2025):
         .reset_index(drop=True)
     )
 
-    dim_driver.to_csv(
-        output_file,
-        index=False
+    write_dimension_csv(
+        dim_driver,
+        output_file
     )
 
     print("\n--------------------------------")

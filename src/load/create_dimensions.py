@@ -60,12 +60,20 @@ def create_dimensions(conn):
         # DIM TEAMS
         # ====================================================
 
+        # TeamId (FastF1's stable constructor identifier, e.g. "red_bull")
+        # is the natural key -- it survives sponsor/livery-driven
+        # TeamName changes that would otherwise collide or orphan rows
+        # keyed on the name alone.
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS dim_teams (
 
                 team_key SERIAL PRIMARY KEY,
 
-                team_name VARCHAR(100) NOT NULL UNIQUE
+                team_id VARCHAR(50) NOT NULL UNIQUE,
+
+                team_name VARCHAR(100) NOT NULL,
+
+                team_color VARCHAR(20)
 
             );
         """)

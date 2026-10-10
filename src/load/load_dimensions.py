@@ -1,8 +1,6 @@
 import sys
 from pathlib import Path
 
-from psycopg2.extras import execute_values
-
 
 # ============================================================
 # PROJECT ROOT
@@ -18,7 +16,7 @@ sys.path.insert(0, str(ROOT_DIR))
 # ============================================================
 
 from src.load.connection import get_connection
-from src.load.io import get_csv, to_native
+from src.load.io import get_csv, to_native, run_insert
 from src.utils.cli import get_year
 
 
@@ -79,13 +77,7 @@ def load_seasons(conn):
         for _, row in df.iterrows()
     ]
 
-    with conn.cursor() as cursor:
-
-        execute_values(
-            cursor,
-            query,
-            rows
-        )
+    run_insert(conn, query, rows)
 
     print("dim_seasons loaded")
 
@@ -103,40 +95,53 @@ def load_teams(conn):
     print("Loading dim_teams...")
     print(f"Rows found: {len(df)}")
 
-    if "TeamName" not in df.columns:
+    required = [
+        "TeamId",
+        "TeamName",
+        "TeamColor"
+    ]
 
-        raise KeyError(
-            f"TeamName missing from {file}. "
-            f"Available columns: {list(df.columns)}"
-        )
+    for column in required:
+
+        if column not in df.columns:
+
+            raise KeyError(
+                f"{column} missing from {file}. "
+                f"Available columns: {list(df.columns)}"
+            )
 
     df = df[
-        ["TeamName"]
-    ].drop_duplicates()
+        required
+    ].drop_duplicates(
+        subset=["TeamId"]
+    )
 
     rows = [
         (
+            to_native(row["TeamId"]),
             to_native(row["TeamName"]),
+            to_native(row["TeamColor"]),
         )
         for _, row in df.iterrows()
     ]
 
+    # TeamName / TeamColor are SCD1 attributes (see build_team_dimension.py)
+    # -- a re-run with a renamed sponsor/livery must overwrite the stored
+    # row, not silently keep whichever values were loaded first.
     query = """
         INSERT INTO dim_teams (
-            team_name
+            team_id,
+            team_name,
+            team_color
         )
         VALUES %s
-        ON CONFLICT (team_name)
-        DO NOTHING
+        ON CONFLICT (team_id)
+        DO UPDATE SET
+            team_name = EXCLUDED.team_name,
+            team_color = EXCLUDED.team_color
     """
 
-    with conn.cursor() as cursor:
-
-        execute_values(
-            cursor,
-            query,
-            rows
-        )
+    run_insert(conn, query, rows)
 
     print("dim_teams loaded")
 
@@ -190,6 +195,10 @@ def load_drivers(conn):
         for _, row in df.iterrows()
     ]
 
+    # DriverNumber is the SCD1 attribute that actually varies season to
+    # season (see build_driver_dimension.py); the rest are stable
+    # identity attributes, but updating all of them keeps a re-run from
+    # ever silently diverging from the CSV, the source of truth.
     query = """
         INSERT INTO dim_drivers (
             driver_number,
@@ -201,16 +210,15 @@ def load_drivers(conn):
         )
         VALUES %s
         ON CONFLICT (abbreviation)
-        DO NOTHING
+        DO UPDATE SET
+            driver_number = EXCLUDED.driver_number,
+            first_name = EXCLUDED.first_name,
+            last_name = EXCLUDED.last_name,
+            full_name = EXCLUDED.full_name,
+            country_code = EXCLUDED.country_code
     """
 
-    with conn.cursor() as cursor:
-
-        execute_values(
-            cursor,
-            query,
-            rows
-        )
+    run_insert(conn, query, rows)
 
     print("dim_drivers loaded")
 
@@ -317,16 +325,17 @@ def load_races(conn):
         )
         VALUES %s
         ON CONFLICT (season_key, race)
-        DO NOTHING
+        DO UPDATE SET
+            round_number = EXCLUDED.round_number,
+            country = EXCLUDED.country,
+            location = EXCLUDED.location,
+            official_event_name = EXCLUDED.official_event_name,
+            event_date = EXCLUDED.event_date,
+            event_format = EXCLUDED.event_format,
+            sprint_weekend = EXCLUDED.sprint_weekend
     """
 
-    with conn.cursor() as cursor:
-
-        execute_values(
-            cursor,
-            query,
-            rows
-        )
+    run_insert(conn, query, rows)
 
     print("dim_races loaded")
 
